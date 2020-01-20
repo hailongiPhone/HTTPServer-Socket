@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D93B041723D57AEC00977A75 /* HLHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041523D57AEC00977A75 /* HLHTTPServer.m */; };
+		D93B041A23D57B7700977A75 /* HLHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041923D57B7700977A75 /* HLHTTPRequest.m */; };
+		D93B041D23D57B9500977A75 /* HLHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041C23D57B9500977A75 /* HLHTTPResponse.m */; };
+		D93B042023D5888B00977A75 /* HLSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041F23D5888B00977A75 /* HLSocketServer.m */; };
 		D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B323CC45110051045E /* AppDelegate.m */; };
 		D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B623CC45110051045E /* SceneDelegate.m */; };
 		D9F7A6BA23CC45110051045E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B923CC45110051045E /* ViewController.m */; };
@@ -14,9 +18,19 @@
 		D9F7A6BF23CC45130051045E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9F7A6BE23CC45130051045E /* Assets.xcassets */; };
 		D9F7A6C223CC45130051045E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F7A6C023CC45130051045E /* LaunchScreen.storyboard */; };
 		D9F7A6C523CC45130051045E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6C423CC45130051045E /* main.m */; };
+		D9F7A6D123CC64710051045E /* BaseSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6D023CC64710051045E /* BaseSocket.m */; };
+		D9F7A6D423CC71E30051045E /* IPAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6D323CC71E30051045E /* IPAddress.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D93B041523D57AEC00977A75 /* HLHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLHTTPServer.m; sourceTree = "<group>"; };
+		D93B041623D57AEC00977A75 /* HLHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLHTTPServer.h; sourceTree = "<group>"; };
+		D93B041823D57B7700977A75 /* HLHTTPRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPRequest.h; sourceTree = "<group>"; };
+		D93B041923D57B7700977A75 /* HLHTTPRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPRequest.m; sourceTree = "<group>"; };
+		D93B041B23D57B9500977A75 /* HLHTTPResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPResponse.h; sourceTree = "<group>"; };
+		D93B041C23D57B9500977A75 /* HLHTTPResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPResponse.m; sourceTree = "<group>"; };
+		D93B041E23D5888B00977A75 /* HLSocketServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketServer.h; sourceTree = "<group>"; };
+		D93B041F23D5888B00977A75 /* HLSocketServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLSocketServer.m; sourceTree = "<group>"; };
 		D9F7A6AF23CC45110051045E /* iOS_socket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_socket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F7A6B223CC45110051045E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F7A6B323CC45110051045E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -29,6 +43,10 @@
 		D9F7A6C123CC45130051045E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9F7A6C323CC45130051045E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9F7A6C423CC45130051045E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D9F7A6CD23CC64410051045E /* BaseSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseSocket.h; sourceTree = "<group>"; };
+		D9F7A6D023CC64710051045E /* BaseSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseSocket.m; sourceTree = "<group>"; };
+		D9F7A6D223CC71C70051045E /* IPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPAddress.h; sourceTree = "<group>"; };
+		D9F7A6D323CC71E30051045E /* IPAddress.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = IPAddress.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +60,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D93B041423D57AEC00977A75 /* HLHTTPServer */ = {
+			isa = PBXGroup;
+			children = (
+				D93B041523D57AEC00977A75 /* HLHTTPServer.m */,
+				D93B041623D57AEC00977A75 /* HLHTTPServer.h */,
+				D93B041823D57B7700977A75 /* HLHTTPRequest.h */,
+				D93B041923D57B7700977A75 /* HLHTTPRequest.m */,
+				D93B041B23D57B9500977A75 /* HLHTTPResponse.h */,
+				D93B041C23D57B9500977A75 /* HLHTTPResponse.m */,
+				D93B041E23D5888B00977A75 /* HLSocketServer.h */,
+				D93B041F23D5888B00977A75 /* HLSocketServer.m */,
+			);
+			path = HLHTTPServer;
+			sourceTree = "<group>";
+		};
 		D9F7A6A623CC45110051045E = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +94,7 @@
 		D9F7A6B123CC45110051045E /* iOS_socket */ = {
 			isa = PBXGroup;
 			children = (
+				D9F7A6CB23CC63E40051045E /* socket */,
 				D9F7A6B223CC45110051045E /* AppDelegate.h */,
 				D9F7A6B323CC45110051045E /* AppDelegate.m */,
 				D9F7A6B523CC45110051045E /* SceneDelegate.h */,
@@ -74,6 +108,26 @@
 				D9F7A6C423CC45130051045E /* main.m */,
 			);
 			path = iOS_socket;
+			sourceTree = "<group>";
+		};
+		D9F7A6CB23CC63E40051045E /* socket */ = {
+			isa = PBXGroup;
+			children = (
+				D93B041423D57AEC00977A75 /* HLHTTPServer */,
+				D9F7A6CC23CC63F20051045E /* base */,
+				D9F7A6D223CC71C70051045E /* IPAddress.h */,
+				D9F7A6D323CC71E30051045E /* IPAddress.c */,
+			);
+			path = socket;
+			sourceTree = "<group>";
+		};
+		D9F7A6CC23CC63F20051045E /* base */ = {
+			isa = PBXGroup;
+			children = (
+				D9F7A6CD23CC64410051045E /* BaseSocket.h */,
+				D9F7A6D023CC64710051045E /* BaseSocket.m */,
+			);
+			path = base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +204,12 @@
 				D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */,
 				D9F7A6C523CC45130051045E /* main.m in Sources */,
 				D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */,
+				D93B041D23D57B9500977A75 /* HLHTTPResponse.m in Sources */,
+				D93B041723D57AEC00977A75 /* HLHTTPServer.m in Sources */,
+				D9F7A6D123CC64710051045E /* BaseSocket.m in Sources */,
+				D93B042023D5888B00977A75 /* HLSocketServer.m in Sources */,
+				D9F7A6D423CC71E30051045E /* IPAddress.c in Sources */,
+				D93B041A23D57B7700977A75 /* HLHTTPRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
