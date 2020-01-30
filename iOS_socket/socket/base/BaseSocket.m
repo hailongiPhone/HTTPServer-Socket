@@ -14,8 +14,8 @@
 #import <ifaddrs.h>
 #include <unistd.h>
 
-#define MESSAGE_SIZE 102400
-#define SERVER_PORT 12345
+#define MESSAGE_SIZE 10240
+#define SERVER_PORT 55667
 #define SERVER_ADD  "127.0.0.1"
 #define BUFFER_SIZE 1024
 #define MAXLINE        100

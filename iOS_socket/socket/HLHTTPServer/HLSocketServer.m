@@ -7,6 +7,7 @@
 //
 
 #import "HLSocketServer.h"
+#import "HLSocketConnect.h"
 
 #import <sys/socket.h>
 #import <sys/un.h>
@@ -15,18 +16,39 @@
 #import <ifaddrs.h>
 #include <unistd.h>
 
-@interface HLSocketServer (){
+#define ListenCount 1024
+
+@interface HLSocketServer () <HLSocketConnectDelegate>{
 //    dispatch_queue_t mainReactorQueue;
 }
 //线程管理
 @property (nonatomic,assign) int mainSocket;
-@property (nonatomic,strong) dispatch_queue_t mainReactorQueue;
+@property (nonatomic,strong) dispatch_queue_t mainReactorQueue;     //非UI主线程，串行队列
 @property (nonatomic,strong) dispatch_source_t mainReactorSocketSource;
 
+@property (nonatomic,strong) NSMutableArray * subReactor;
+
+@property (nonatomic,weak) id<HLSocketServerDelegate> delegate;
+@property (nonatomic,strong) dispatch_queue_t delegateQueue;
 @end
 
 @implementation HLSocketServer
 
+- (instancetype) init
+{
+    if (self = [super init]) {
+//        [self setupMainReactor:12345];
+    }
+    
+    return self;
+}
+
+-(void)setDelegate:(id<HLSocketServerDelegate> _Nullable)delegate
+     callbackQueue:(dispatch_queue_t)callbackQueue;
+{
+    self.delegate = delegate;
+    self.delegateQueue = callbackQueue;
+}
 
 #pragma mark - Socket
 -(void)setupMainReactor:(NSInteger) port;
@@ -42,9 +64,8 @@
 
 - (void) setupSocketLocalHost:(NSInteger) port;
 {
-    int listenfd, connfd;
-   socklen_t clilen;
-   struct sockaddr_in cliaddr, servaddr;
+    int listenfd;
+   struct sockaddr_in servaddr;
    listenfd = socket(AF_INET, SOCK_STREAM, 0);
    bzero(&servaddr, sizeof(servaddr));
    servaddr.sin_family = AF_INET;
@@ -59,7 +80,7 @@
    bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
     self.mainSocket = listenfd;
    /* listen的backlog为1024 */
-   listen(listenfd, 1024);
+   listen(listenfd, ListenCount);
     
 //   /* 循环处理用户请求 */
 //   for (;;) {
@@ -99,11 +120,13 @@
 
 - (BOOL) doAccept;
 {
+    NSLog(@"doAccept");
     struct sockaddr_in cliaddr;
     socklen_t clilen;
     clilen = sizeof(cliaddr);
     int connfd = accept(self.mainSocket, (struct sockaddr *) &cliaddr, &clilen);
     
+    NSLog(@"id = %s",inet_ntoa(cliaddr.sin_addr));
     [self setupSubReactor:connfd];
     
     return YES;
@@ -112,24 +135,57 @@
 //SubReactor 也要使用Thread pool
 - (void) setupSubReactor:(int)connectionFD;
 {
-    int nosigpipe = 1;
-    setsockopt(connectionFD, SOL_SOCKET, SO_NOSIGPIPE, &nosigpipe, sizeof(nosigpipe));
+    if (!self.subReactor) {
+        self.subReactor = [[NSMutableArray alloc] initWithCapacity:ListenCount];
+    }
     
-    NSString * name = [NSString stringWithFormat:@"SubReactor %d",connectionFD];
-    dispatch_queue_t queue = dispatch_queue_create([name UTF8String], NULL);
+    HLSocketConnect * aconnect = [[HLSocketConnect alloc] initWithSocketFD:connectionFD];
+    aconnect.delegate = self;
+    if (self.delegate) {
+        [self runBlockOnDelegateQueue:^{
+             [self.delegate connect:aconnect];
+        }];
+    }
+    [self.subReactor addObject:aconnect];
+    [aconnect start];
+}
+
+#pragma mark - Connect Delegate
+- (void) connect:(HLSocketConnect *)connect readPackageData:(NSData*)data packageTag:(NSInteger)tag;
+{
+    if (self.delegate) {
+        [self runBlockOnDelegateQueue:^{
+            [self.delegate connect:connect readPackageData:data packageTag:tag];
+        }];
+    }
+}
+
+- (void) connect:(HLSocketConnect *)connect writePackageData:(NSData*)data packageTag:(NSInteger)tag;
+{
     
-    
-    
-    
-    dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_READ,
-                                     myDescriptor, 0, queue);
-    dispatch_source_set_event_handler(source, ^{
-       // Get some data from the source variable, which is captured
-       // from the parent context.
-       size_t estimated = dispatch_source_get_data(source);
-     
-       // Continue reading the descriptor...
+}
+
+- (void) connectClosed:(HLSocketConnect *)connect;
+{
+    dispatch_async(self.mainReactorQueue, ^{
+        [self.subReactor removeObject:connect];
     });
-    dispatch_resume(source);
+    
+    if (self.delegate) {
+        [self runBlockOnDelegateQueue:^{
+            [self.delegate connectClosed:connect];
+        }];
+    }
+}
+
+#pragma mark - Helper
+
+- (void)runBlockOnDelegateQueue:(void (^)(void))block;
+{
+    dispatch_sync(self.delegateQueue, ^{
+        block();
+    });
+    
+    
 }
 @end

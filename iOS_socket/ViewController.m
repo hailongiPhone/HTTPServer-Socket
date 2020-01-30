@@ -26,11 +26,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        self.bs = [BaseSocket new];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        self.bs = [BaseSocket new];
 //        [self.bs setupServerLocalIPCDgram];
-//
-//    });
+
+    });
 //
 //    [self listIP];
     
@@ -41,7 +41,7 @@
 
 - (IBAction)onTapButton:(id)sender {
     
-//    [self.bs setupClinetLocalIPCDgram];
+    [self.bs setupClinetTCP];
 //    [[self class] stopCFStreamThreadIfNeeded];
     
 //    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"da bao" message:@"Aa" preferredStyle:UIAlertControllerStyleAlert];

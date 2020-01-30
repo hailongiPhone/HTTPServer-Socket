@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HLHTTPServerProtocol <NSObject>
 
 -(instancetype)initWithPort:(NSInteger)port;
+-(void)setDocumentRoot:(NSString*)path;
 
 @end
 
@@ -28,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,readonly)NSInteger port;
 
 -(instancetype)initWithPort:(NSInteger)port;
+//文件路径
+-(void)setDocumentRoot:(NSString*)path;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D90B5B0723D5E429001DC64D /* HLSocketConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = D90B5B0623D5E429001DC64D /* HLSocketConnect.m */; };
 		D93B041723D57AEC00977A75 /* HLHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041523D57AEC00977A75 /* HLHTTPServer.m */; };
 		D93B041A23D57B7700977A75 /* HLHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041923D57B7700977A75 /* HLHTTPRequest.m */; };
 		D93B041D23D57B9500977A75 /* HLHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041C23D57B9500977A75 /* HLHTTPResponse.m */; };
 		D93B042023D5888B00977A75 /* HLSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B041F23D5888B00977A75 /* HLSocketServer.m */; };
+		D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */; };
+		D9A12C3C23D6A7AF0072BCA3 /* HLMessagePackage.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A12C3B23D6A7AF0072BCA3 /* HLMessagePackage.m */; };
+		D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C745FD23E2A3B60080851E /* HLPackageRead.m */; };
+		D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C7460023E2B59E0080851E /* HLSocketReader.m */; };
 		D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B323CC45110051045E /* AppDelegate.m */; };
 		D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B623CC45110051045E /* SceneDelegate.m */; };
 		D9F7A6BA23CC45110051045E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B923CC45110051045E /* ViewController.m */; };
@@ -23,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D90B5B0523D5E429001DC64D /* HLSocketConnect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketConnect.h; sourceTree = "<group>"; };
+		D90B5B0623D5E429001DC64D /* HLSocketConnect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLSocketConnect.m; sourceTree = "<group>"; };
 		D93B041523D57AEC00977A75 /* HLHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLHTTPServer.m; sourceTree = "<group>"; };
 		D93B041623D57AEC00977A75 /* HLHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLHTTPServer.h; sourceTree = "<group>"; };
 		D93B041823D57B7700977A75 /* HLHTTPRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPRequest.h; sourceTree = "<group>"; };
@@ -31,6 +38,15 @@
 		D93B041C23D57B9500977A75 /* HLHTTPResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPResponse.m; sourceTree = "<group>"; };
 		D93B041E23D5888B00977A75 /* HLSocketServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketServer.h; sourceTree = "<group>"; };
 		D93B041F23D5888B00977A75 /* HLSocketServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLSocketServer.m; sourceTree = "<group>"; };
+		D9A12C3723D68E1F0072BCA3 /* HLPreBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPreBuffer.h; sourceTree = "<group>"; };
+		D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPreBuffer.m; sourceTree = "<group>"; };
+		D9A12C3A23D6A7AF0072BCA3 /* HLMessagePackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLMessagePackage.h; sourceTree = "<group>"; };
+		D9A12C3B23D6A7AF0072BCA3 /* HLMessagePackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLMessagePackage.m; sourceTree = "<group>"; };
+		D9C745FC23E2A3B60080851E /* HLPackageRead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPackageRead.h; sourceTree = "<group>"; };
+		D9C745FD23E2A3B60080851E /* HLPackageRead.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPackageRead.m; sourceTree = "<group>"; };
+		D9C745FF23E2B59E0080851E /* HLSocketReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketReader.h; sourceTree = "<group>"; };
+		D9C7460023E2B59E0080851E /* HLSocketReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLSocketReader.m; sourceTree = "<group>"; };
+		D9C7460623E2BC6D0080851E /* HLReadBufferProtocal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLReadBufferProtocal.h; sourceTree = "<group>"; };
 		D9F7A6AF23CC45110051045E /* iOS_socket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_socket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F7A6B223CC45110051045E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F7A6B323CC45110051045E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -71,8 +87,27 @@
 				D93B041C23D57B9500977A75 /* HLHTTPResponse.m */,
 				D93B041E23D5888B00977A75 /* HLSocketServer.h */,
 				D93B041F23D5888B00977A75 /* HLSocketServer.m */,
+				D90B5B0523D5E429001DC64D /* HLSocketConnect.h */,
+				D90B5B0623D5E429001DC64D /* HLSocketConnect.m */,
+				D9A12C3A23D6A7AF0072BCA3 /* HLMessagePackage.h */,
+				D9A12C3B23D6A7AF0072BCA3 /* HLMessagePackage.m */,
+				D9C7460223E2B5A90080851E /* Reader */,
 			);
 			path = HLHTTPServer;
+			sourceTree = "<group>";
+		};
+		D9C7460223E2B5A90080851E /* Reader */ = {
+			isa = PBXGroup;
+			children = (
+				D9C745FF23E2B59E0080851E /* HLSocketReader.h */,
+				D9C7460023E2B59E0080851E /* HLSocketReader.m */,
+				D9C745FC23E2A3B60080851E /* HLPackageRead.h */,
+				D9C745FD23E2A3B60080851E /* HLPackageRead.m */,
+				D9A12C3723D68E1F0072BCA3 /* HLPreBuffer.h */,
+				D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */,
+				D9C7460623E2BC6D0080851E /* HLReadBufferProtocal.h */,
+			);
+			path = Reader;
 			sourceTree = "<group>";
 		};
 		D9F7A6A623CC45110051045E = {
@@ -200,9 +235,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D90B5B0723D5E429001DC64D /* HLSocketConnect.m in Sources */,
+				D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */,
 				D9F7A6BA23CC45110051045E /* ViewController.m in Sources */,
 				D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */,
+				D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */,
+				D9A12C3C23D6A7AF0072BCA3 /* HLMessagePackage.m in Sources */,
 				D9F7A6C523CC45130051045E /* main.m in Sources */,
+				D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */,
 				D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */,
 				D93B041D23D57B9500977A75 /* HLHTTPResponse.m in Sources */,
 				D93B041723D57AEC00977A75 /* HLHTTPServer.m in Sources */,
