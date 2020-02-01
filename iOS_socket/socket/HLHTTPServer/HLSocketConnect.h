@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HLSocketReader.h"
+#import "HLSocketWriter.h"
 
 /**
  *  HLSocketConnect Sockets配对，一条连接一个线程
@@ -36,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,weak) id<HLSocketConnectDelegate> delegate;
 
 - (void) readPackage:(HLPackageRead *)package packageTag:(NSInteger)tag;
+- (void) writePackage:(HLPackageWriter *)package packageTag:(NSInteger)tag;
 //启动监听事件
 - (void)start;
 - (void)stop;

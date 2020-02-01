@@ -58,6 +58,7 @@ typedef enum : NSUInteger {
             break;
         case PackageTypeTestTerminal:
             NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
+            [connect writePackage:<#(nonnull HLPackageWriter *)#> packageTag:<#(NSInteger)#>]
             break;
         default:
             break;
@@ -81,4 +82,7 @@ typedef enum : NSUInteger {
 {
     
 }
+
+#pragma mark -
+- (void) respon;
 @end

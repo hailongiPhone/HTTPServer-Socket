@@ -17,6 +17,7 @@
 - (void)didRead:(size_t)bytesRead;
 - (void)didWrite:(size_t)bytesWritten;
 
+- (NSData *)bufferData;
 @end
 
 #endif /* HLReadBufferProtocal_h */

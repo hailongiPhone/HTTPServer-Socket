@@ -15,17 +15,20 @@
 #include <unistd.h>
 
 #import "HLPackageRead.h"
+#import "HLSocketWriter.h"
 
 
 typedef NS_ENUM(NSUInteger, SocketConnectState) {
-    SocketConnectStateWaitReadData = 1<<0,
-    SocketConnectStateReading = 1<<1,
+    SocketConnectStateWaitReadData          = 1,
+    SocketConnectStateReading               ,
+    SocketConnectStateReadingSuspend       ,
     
-    SocketConnectStateWaitWriteData = 1<<2,
-    SocketConnectStateWriting = 1<<3,
+    SocketConnectStateWaitWriteData         ,
+    SocketConnectStateWriting               ,
+    SocketConnectStateWritingSuspend        ,
     
-    SocketConnectStateDisconnecting = 1<<4,
-    SocketConnectStateEOF = 1<<5,
+    SocketConnectStateDisconnecting         ,
+    SocketConnectStateEOF                   ,
 };
 
 @interface HLSocketConnect ()
@@ -34,7 +37,9 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 @property (nonatomic,strong) dispatch_source_t writeSoure;
 
 @property(nonatomic,strong) HLSocketReader * reader;
-@property(nonatomic,assign) NSInteger state;
+@property(nonatomic,strong) HLSocketWriter * writer;
+@property(nonatomic,assign) SocketConnectState readState;
+@property(nonatomic,assign) SocketConnectState writeState;
 @end
 
 @implementation HLSocketConnect
@@ -87,10 +92,9 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
     dispatch_source_t writesource = dispatch_source_create(DISPATCH_SOURCE_TYPE_WRITE,
                                      connectionFD, 0, queue);
     dispatch_source_set_event_handler(writesource, ^{
-        
         NSLog(@"dispatch_source_set_event_handler--writesource = %ld",dispatch_source_get_data(writesource));
-        
-        [weakSelf doWrite];
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf doWrite];
     });
 //    dispatch_resume(writesource);
     self.writeSoure = writesource;
@@ -173,24 +177,50 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
     return self.reader;
 }
 
+- (HLSocketWriter * )lazySockerWrier;
+{
+    if (!self.writer) {
+        self.writer = [HLSocketWriter new];
+    }
+    
+    return self.writer;
+}
+
 - (void)doReadEOF:(int)connectionFD;
 {
-    [self enableState:SocketConnectStateEOF];
+    self.readState = SocketConnectStateEOF;
     [self dispose];
 }
 
 - (void)doWrite;
 {
-    NSData * data = [@"<html><body>H1hahah</body></html>" dataUsingEncoding:NSUTF8StringEncoding];
-    uint8_t *buffer = (uint8_t *)[data bytes];
-    ssize_t result = write(self.socketFD, buffer, (size_t)[data length]);
+    HLSocketWriter * writer = [self lazySockerWrier];
     
-     if (result <= 0) {
-                NSLog(@"send failed");
-                return;
+    uint8_t * buffer = NULL;
+    NSUInteger wanttowritelength = [writer writeLenthWriteBufferPointer:&buffer];
     
-            }
-    [self disconnect];
+    if (wanttowritelength < 1) {
+        [self suspendWriteSource];
+        return;
+    }
+    
+    //尝试写
+    ssize_t result = 0;
+    result = write(self.socketFD, buffer, wanttowritelength);
+    
+    if (result < 0){
+        NSLog(@"出错");
+    }else{
+        [writer didWrite:result];
+    }
+
+    HLPackageWriter* package = [writer extractDoneWrite];
+    
+    if (self.delegate) {
+        [self.delegate connect:self
+               writePackageData:[package bufferData]
+                    packageTag:[package tag]];
+    }
 }
 
 - (void)dispose;
@@ -211,22 +241,45 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
     }];
 }
 
+- (void) writePackage:(HLPackageWriter *)package packageTag:(NSInteger)tag;
+{
+    [self asyncRunOnQueue:^{
+        HLSocketWriter * writer = [self lazySockerWrier];
+        package.tag = tag;
+        [writer addPackageWriter:package];
+        
+        if (self.writeState == SocketConnectStateWritingSuspend) {
+            [self resumeWriteSource];
+        }
+    }];
+}
 //启动监听事件
 - (void)start;
 {
     dispatch_resume(self.readSoure);
-    dispatch_resume(self.writeSoure);
+    self.readState = SocketConnectStateWaitReadData;
     
-    [self enableState:SocketConnectStateWaitReadData];
-    [self enableState:SocketConnectStateWaitReadData];
+    [self resumeWriteSource];
 }
 - (void)stop;
 {
     dispatch_suspend(self.readSoure);
-    dispatch_suspend(self.writeSoure);
+    self.readState = SocketConnectStateWaitReadData;
     
-    [self disableState:SocketConnectStateWaitReadData];
-    [self disableState:SocketConnectStateWaitReadData];
+    
+    [self suspendWriteSource];
+}
+
+- (void)resumeWriteSource;
+{
+    dispatch_resume(self.writeSoure);
+    self.writeState = SocketConnectStateWaitWriteData;
+}
+
+- (void)suspendWriteSource;
+{
+    dispatch_suspend(self.writeSoure);
+    self.writeState = SocketConnectStateWritingSuspend;
 }
 
 - (void)disconnect;
@@ -242,17 +295,8 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 #pragma mark - update State
 - (void)resetState;
 {
-    self.state = 0;
-}
-
-- (void)enableState:(SocketConnectState)state;
-{
-    self.state |= state;
-}
-
-- (void)disableState:(SocketConnectState)state;
-{
-    self.state ^= state;
+    self.readState = 0;
+    self.writeState = 0;
 }
 
 #pragma mark -

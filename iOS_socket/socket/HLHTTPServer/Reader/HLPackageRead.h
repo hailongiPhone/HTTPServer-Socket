@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hasDone;
 
 - (void)ensureCapacityForAdditionalDataOfLength:(NSUInteger)bytesToRead;
+
 - (uint8_t *)writeBuffer;
 - (uint8_t *)readBuffer;
 - (void)didRead:(size_t)bytesRead;
