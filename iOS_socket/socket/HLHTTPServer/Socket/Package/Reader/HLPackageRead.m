@@ -8,11 +8,8 @@
 
 #import "HLPackageRead.h"
 @interface HLPackageRead ()
-@property(nonatomic,strong)NSMutableData *buffer;
 @property(nonatomic,strong)NSData* terminator;
-
 @property(nonatomic,assign)NSUInteger readLength;
-@property(nonatomic,assign)NSUInteger bytesDone;
 @end
 
 @implementation HLPackageRead
@@ -142,20 +139,7 @@
 
 
 #pragma mark -
-- (BOOL)hasDone;
-{
-    BOOL result = NO;
-    if (self.readLength) {
-        result = self.bytesDone == self.readLength;
-    }else{
-        NSUInteger termLength = [self.terminator length];
-        const void *termBuf = [self.terminator bytes];
-        uint8_t *buf = (uint8_t *)[self.buffer mutableBytes] + self.bytesDone - termLength;
-        result = (memcmp(buf, termBuf, termLength) == 0);
-    }
-    
-    return result;
-}
+
 
 - (void)ensureCapacityForAdditionalDataOfLength:(NSUInteger)bytesToRead;
 {
@@ -172,6 +156,22 @@
 }
 
 #pragma mark -
+
+- (BOOL)hasDone;
+{
+    BOOL result = NO;
+    if (self.readLength) {
+        result = self.bytesDone == self.readLength;
+    }else{
+        NSUInteger termLength = [self.terminator length];
+        const void *termBuf = [self.terminator bytes];
+        uint8_t *buf = (uint8_t *)[self.buffer mutableBytes] + self.bytesDone - termLength;
+        result = (memcmp(buf, termBuf, termLength) == 0);
+    }
+    
+    return result;
+}
+
 - (uint8_t *)writeBuffer;
 {
     return (uint8_t *)[self.buffer mutableBytes] + self.bytesDone;
@@ -182,18 +182,4 @@
     return (uint8_t *)[self.buffer mutableBytes];
 }
 
-- (void)didRead:(size_t)bytesRead;
-{
-    
-}
-
-- (void)didWrite:(size_t)bytesWritten;
-{
-    self.bytesDone = self.bytesDone + bytesWritten;
-}
-
-- (NSData *)bufferData;
-{
-    return self.buffer;
-}
 @end

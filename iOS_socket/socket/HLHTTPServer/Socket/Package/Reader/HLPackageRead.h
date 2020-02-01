@@ -15,10 +15,11 @@
 
 #import <Foundation/Foundation.h>
 #import "HLReadBufferProtocal.h"
+#import "HLPackage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HLPackageRead : NSObject <HLReadBufferProtocal>
+@interface HLPackageRead : HLPackage
 {
     @public
 //    NSMutableData *buffer;
@@ -38,8 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 //    long tag;
 }
 
-@property(nonatomic,assign)NSInteger tag;
-
 +(instancetype)packageReadWithFixLength:(NSInteger)length;
 +(instancetype)packageReadWithTerminator:(NSString *)string;
 
@@ -47,16 +46,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)readLengthForData:(uint8_t *)data availableLength:(NSUInteger)bytesAvailable;
 - (NSUInteger)readLengthForDataLength:(NSUInteger)bytesAvailable;
 - (BOOL)shouldUsePreBufferForDataLength:(NSUInteger)length;
-- (BOOL)hasDone;
+
 
 - (void)ensureCapacityForAdditionalDataOfLength:(NSUInteger)bytesToRead;
 
-- (uint8_t *)writeBuffer;
-- (uint8_t *)readBuffer;
-- (void)didRead:(size_t)bytesRead;
-- (void)didWrite:(size_t)bytesWritten;
-
-- (NSData *)bufferData;
 
 @end
 

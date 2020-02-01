@@ -91,14 +91,7 @@
 				D93B041923D57B7700977A75 /* HLHTTPRequest.m */,
 				D93B041B23D57B9500977A75 /* HLHTTPResponse.h */,
 				D93B041C23D57B9500977A75 /* HLHTTPResponse.m */,
-				D93B041E23D5888B00977A75 /* HLSocketServer.h */,
-				D93B041F23D5888B00977A75 /* HLSocketServer.m */,
-				D90B5B0523D5E429001DC64D /* HLSocketConnect.h */,
-				D90B5B0623D5E429001DC64D /* HLSocketConnect.m */,
-				D9969B4323E5A750000B0FDB /* HLPackage.h */,
-				D9969B4423E5A750000B0FDB /* HLPackage.m */,
-				D9969B4223E59078000B0FDB /* Writer */,
-				D9C7460223E2B5A90080851E /* Reader */,
+				D9969B4623E5B470000B0FDB /* Socket */,
 			);
 			path = HLHTTPServer;
 			sourceTree = "<group>";
@@ -114,6 +107,30 @@
 			path = Writer;
 			sourceTree = "<group>";
 		};
+		D9969B4623E5B470000B0FDB /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				D93B041E23D5888B00977A75 /* HLSocketServer.h */,
+				D93B041F23D5888B00977A75 /* HLSocketServer.m */,
+				D90B5B0523D5E429001DC64D /* HLSocketConnect.h */,
+				D90B5B0623D5E429001DC64D /* HLSocketConnect.m */,
+				D9969B4723E5B49A000B0FDB /* Package */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		D9969B4723E5B49A000B0FDB /* Package */ = {
+			isa = PBXGroup;
+			children = (
+				D9969B4223E59078000B0FDB /* Writer */,
+				D9C7460223E2B5A90080851E /* Reader */,
+				D9969B4323E5A750000B0FDB /* HLPackage.h */,
+				D9969B4423E5A750000B0FDB /* HLPackage.m */,
+				D9C7460623E2BC6D0080851E /* HLReadBufferProtocal.h */,
+			);
+			path = Package;
+			sourceTree = "<group>";
+		};
 		D9C7460223E2B5A90080851E /* Reader */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,7 +140,6 @@
 				D9C745FD23E2A3B60080851E /* HLPackageRead.m */,
 				D9A12C3723D68E1F0072BCA3 /* HLPreBuffer.h */,
 				D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */,
-				D9C7460623E2BC6D0080851E /* HLReadBufferProtocal.h */,
 			);
 			path = Reader;
 			sourceTree = "<group>";

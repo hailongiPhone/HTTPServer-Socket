@@ -10,7 +10,6 @@
 
 @interface HLPackageWriter ()
 @property(nonatomic,strong)NSData *buffer;
-@property(nonatomic,assign)NSUInteger bytesDone;
 @end
 
 @implementation HLPackageWriter
@@ -35,34 +34,5 @@
     return [self.buffer length] - self.bytesDone;
 }
 
-- (BOOL)hasDone;
-{
-    return self.bytesDone >= [self.buffer length];
-}
-
-- (uint8_t *)writeBuffer;
-{
-    return (uint8_t *)[self.buffer bytes] + self.bytesDone;
-}
-
-- (uint8_t *)readBuffer;
-{
-    return (uint8_t *)[self.buffer bytes] + self.bytesDone;
-}
-
-
-- (void)didRead:(size_t)bytesRead;
-{
-    self.bytesDone = self.bytesDone + bytesRead;
-}
-- (void)didWrite:(size_t)bytesWritten;
-{
-    self.bytesDone = self.bytesDone + bytesWritten;
-}
-
-- (NSData *)bufferData;
-{
-    return self.buffer;
-}
 
 @end
