@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "HLSocketReader.h"
 
+/**
+ *  HLSocketConnect Sockets配对，一条连接一个线程
+ *  要保证线程安全才好--读写都是在单独的线程中完成
+ */
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class HLSocketConnect;

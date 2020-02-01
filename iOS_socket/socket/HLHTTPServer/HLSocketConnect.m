@@ -17,12 +17,24 @@
 #import "HLPackageRead.h"
 
 
+typedef NS_ENUM(NSUInteger, SocketConnectState) {
+    SocketConnectStateWaitReadData = 1<<0,
+    SocketConnectStateReading = 1<<1,
+    
+    SocketConnectStateWaitWriteData = 1<<2,
+    SocketConnectStateWriting = 1<<3,
+    
+    SocketConnectStateDisconnecting = 1<<4,
+    SocketConnectStateEOF = 1<<5,
+};
+
 @interface HLSocketConnect ()
 @property (nonatomic,strong) dispatch_queue_t queue;
 @property (nonatomic,strong) dispatch_source_t readSoure;
 @property (nonatomic,strong) dispatch_source_t writeSoure;
 
 @property(nonatomic,strong) HLSocketReader * reader;
+@property(nonatomic,assign) NSInteger state;
 @end
 
 @implementation HLSocketConnect
@@ -90,6 +102,9 @@
     dispatch_source_set_cancel_handler(writesource, ^{
         [weakSelf dispose];
     });
+    
+    [self resetState];
+    
 }
 
 //具体从sockets中读取数据
@@ -130,15 +145,23 @@
             time++;
         }
         
-        HLPackageRead * readerDone = [reader hasDoneRead];
-        if (readerDone && self.delegate) {
+        [self tryPackageReadDoneCallback];
+    }
+    
+    
+}
+
+- (void) tryPackageReadDoneCallback;
+{
+    HLSocketReader * reader = [self lazySocketReader];
+    HLPackageRead * readerDone;
+    while ((readerDone = [reader extractDoneRead])) {
+        if (self.delegate) {
             [self.delegate connect:self
                    readPackageData:[readerDone bufferData]
                         packageTag:[readerDone tag]];
         }
     }
-    
-    
 }
 
 - (HLSocketReader * )lazySocketReader;
@@ -152,6 +175,7 @@
 
 - (void)doReadEOF:(int)connectionFD;
 {
+    [self enableState:SocketConnectStateEOF];
     [self dispose];
 }
 
@@ -180,9 +204,11 @@
 #pragma mark - Interface
 - (void) readPackage:(HLPackageRead *)package packageTag:(NSInteger)tag;
 {
-    HLSocketReader * reader = [self lazySocketReader];
-    package.tag = tag;
-    [reader addPackageReader:package];
+    [self asyncRunOnQueue:^{
+        HLSocketReader * reader = [self lazySocketReader];
+        package.tag = tag;
+        [reader addPackageReader:package];
+    }];
 }
 
 //启动监听事件
@@ -190,11 +216,17 @@
 {
     dispatch_resume(self.readSoure);
     dispatch_resume(self.writeSoure);
+    
+    [self enableState:SocketConnectStateWaitReadData];
+    [self enableState:SocketConnectStateWaitReadData];
 }
 - (void)stop;
 {
     dispatch_suspend(self.readSoure);
     dispatch_suspend(self.writeSoure);
+    
+    [self disableState:SocketConnectStateWaitReadData];
+    [self disableState:SocketConnectStateWaitReadData];
 }
 
 - (void)disconnect;
@@ -204,6 +236,52 @@
     
     if (self.delegate) {
         [self.delegate connectClosed:self];
+    }
+}
+
+#pragma mark - update State
+- (void)resetState;
+{
+    self.state = 0;
+}
+
+- (void)enableState:(SocketConnectState)state;
+{
+    self.state |= state;
+}
+
+- (void)disableState:(SocketConnectState)state;
+{
+    self.state ^= state;
+}
+
+#pragma mark -
+static int kQueueKey;
+- (void)markQueue:(dispatch_queue_t)queue;
+{
+    void *nonNullUnusedPointer = (__bridge void *)self;
+    dispatch_queue_set_specific(queue,&kQueueKey,nonNullUnusedPointer,NULL);
+}
+
+- (void) syncRunOnQueue:(void(^)(void))block;
+{
+    if(dispatch_get_specific(&kQueueKey)){
+        block();
+    }else{
+        dispatch_sync(self.queue, ^{
+            block();
+        });
+    }
+}
+
+- (void) asyncRunOnQueue:(void(^)(void))block;
+{
+    if(dispatch_get_specific(&kQueueKey)){
+        block();
+    }else{
+        dispatch_async(self.queue, ^{
+            block();
+        });
     }
 }
 @end

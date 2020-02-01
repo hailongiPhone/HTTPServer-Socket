@@ -99,6 +99,9 @@
     query = malloc(MESSAGE_SIZE + 1);
     for (int i = 0; i < MESSAGE_SIZE; i++){
         query[i] = 'a';
+        if (i > 10 && i < 14) {
+            query[i] = 'b';
+        }
     }
     
     query[MESSAGE_SIZE] = '\0';

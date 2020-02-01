@@ -44,12 +44,89 @@
 
 
 #pragma mark - 读取
-- (NSUInteger)readLengthForData:(NSUInteger)bytesAvailable;
+- (BOOL)hasTerminator;
+{
+    return self.terminator != nil;
+}
+
+- (NSUInteger)readLengthForData:(uint8_t *)data availableLength:(NSUInteger)bytesAvailable;
 {
     NSUInteger result = bytesAvailable;
-    //固定长度
+    
+    //两种情况，
+    //1:固定长度
+    //2:特殊结束符
     if (self.readLength) {
         result = MIN(self.readLength - self.bytesDone, bytesAvailable);
+    }else{
+        result = [self readLengthForData:data availableLength:bytesAvailable withTerminator:self.terminator];
+    }
+    
+    return result;
+}
+
+//处理方式，特殊结束符的判断就用 memcmp 进行二进制比较
+//判断的其实位置，就是当前已读数据的最后几位+data中的第一个字符开始组成一个结束符长度字符串，与结束符比较，
+//依次往后移动一位，直到找到结束符，或者所有字符比完为止
+- (NSUInteger)readLengthForData:(uint8_t *)data
+                availableLength:(NSUInteger)bytesAvailable
+                 withTerminator:(NSData *)terminator;
+{
+    NSUInteger result = bytesAvailable;
+    NSUInteger termLength = [terminator length];
+    NSUInteger preBufferLength = bytesAvailable;
+    
+    //加起来，连结束符的长度都不够
+    if ((self.bytesDone + preBufferLength) < termLength){
+        return preBufferLength;
+    }
+    
+    const uint8_t *termBuf = [terminator bytes];
+    uint8_t temp[termLength];
+    
+    NSUInteger readFromDoneLen = MIN(self.bytesDone, (termLength - 1));
+    uint8_t *readFromDoneBuffer = (uint8_t *)[self readBuffer] + self.bytesDone - readFromDoneLen;
+    
+    NSUInteger readFromPreBufferLen = termLength - readFromDoneLen;
+    const uint8_t *pre = data;
+    
+    NSUInteger loopCount = readFromDoneLen + bytesAvailable - termLength + 1;
+    
+    NSUInteger i;
+    for (i = 0; i < loopCount; i++){
+        if (readFromDoneLen > 0){
+            // Combining bytes from buffer and preBuffer
+            memcpy(temp, readFromDoneBuffer, readFromDoneLen);
+            memcpy(temp + readFromDoneLen, pre, readFromPreBufferLen);
+            
+            if (memcmp(temp, termBuf, termLength) == 0){
+                result = readFromPreBufferLen;
+                break;
+            }
+            
+            readFromDoneBuffer++;
+            readFromDoneBuffer--;
+            readFromPreBufferLen++;
+        }else{
+            // Comparing directly from preBuffer
+            if (memcmp(pre, termBuf, termLength) == 0){
+                NSUInteger preOffset = pre - data; // pointer arithmetic
+                result = preOffset + termLength;
+                break;
+            }
+            
+            pre++;
+        }
+    }
+    
+    return result;
+}
+
+- (NSUInteger)readLengthForDataLength:(NSUInteger)bytesAvailable;
+{
+    NSUInteger result = 0;
+    if (self.readLength) {
+        result = MIN((self.readLength - self.bytesDone),bytesAvailable);
     }
     
     return result;
@@ -63,6 +140,8 @@
     return (buffSize - buffUsed) < length;
 }
 
+
+#pragma mark -
 - (BOOL)hasDone;
 {
     BOOL result = NO;
@@ -70,19 +149,29 @@
         result = self.bytesDone == self.readLength;
     }else{
         NSUInteger termLength = [self.terminator length];
-        uint8_t seq[termLength];
         const void *termBuf = [self.terminator bytes];
-        
-        NSUInteger bufLen = MIN(self.bytesDone, (termLength - 1));
-        uint8_t *buf = (uint8_t *)[self.buffer mutableBytes] + self.bytesDone - bufLen;
-        
-        memcpy(seq, buf, bufLen);
-        
-        result = (memcmp(seq, termBuf, termLength) == 0);
+        uint8_t *buf = (uint8_t *)[self.buffer mutableBytes] + self.bytesDone - termLength;
+        result = (memcmp(buf, termBuf, termLength) == 0);
     }
     
     return result;
 }
+
+- (void)ensureCapacityForAdditionalDataOfLength:(NSUInteger)bytesToRead;
+{
+    NSUInteger buffSize = [self.buffer length];
+    NSUInteger buffUsed = self.bytesDone;
+    
+    NSUInteger buffSpace = buffSize - buffUsed;
+    
+    if (bytesToRead > buffSpace)
+    {
+        NSUInteger buffInc = bytesToRead - buffSpace;
+        [self.buffer increaseLengthBy:buffInc];
+    }
+}
+
+#pragma mark -
 - (uint8_t *)writeBuffer;
 {
     return (uint8_t *)[self.buffer mutableBytes] + self.bytesDone;

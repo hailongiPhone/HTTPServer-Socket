@@ -43,11 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)packageReadWithFixLength:(NSInteger)length;
 +(instancetype)packageReadWithTerminator:(NSString *)string;
 
-
-- (NSUInteger)readLengthForData:(NSUInteger)bytesAvailable;
+- (BOOL)hasTerminator;
+- (NSUInteger)readLengthForData:(uint8_t *)data availableLength:(NSUInteger)bytesAvailable;
+- (NSUInteger)readLengthForDataLength:(NSUInteger)bytesAvailable;
 - (BOOL)shouldUsePreBufferForDataLength:(NSUInteger)length;
 - (BOOL)hasDone;
 
+- (void)ensureCapacityForAdditionalDataOfLength:(NSUInteger)bytesToRead;
 - (uint8_t *)writeBuffer;
 - (uint8_t *)readBuffer;
 - (void)didRead:(size_t)bytesRead;

@@ -12,6 +12,7 @@
 
 typedef enum : NSUInteger {
     PackageTypeTest,
+    PackageTypeTestTerminal,
 } PackageType;
 
 @interface HLHTTPServer () <HLSocketServerDelegate>
@@ -55,7 +56,9 @@ typedef enum : NSUInteger {
         case PackageTypeTest:
             NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
             break;
-            
+        case PackageTypeTestTerminal:
+            NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
+            break;
         default:
             break;
     }
@@ -68,6 +71,8 @@ typedef enum : NSUInteger {
 
 - (void) connect:(HLSocketConnect *)connect;
 {
+    [connect readPackage:[HLPackageRead packageReadWithTerminator:@"bbb"]
+              packageTag:PackageTypeTestTerminal];
     [connect readPackage:[HLPackageRead packageReadWithFixLength:100]
               packageTag:PackageTypeTest];
 }
