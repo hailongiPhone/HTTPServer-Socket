@@ -56,6 +56,7 @@
 {
     ssize_t n;
     char buf[1024];
+    int hasRead = 0;
     int time = 0;
     for (;;) {
         fprintf(stdout, "block in read\n");
@@ -63,11 +64,18 @@
             fprintf(stdout, "read end %s",buf);
             return;
         }
+        if (n < 0) {
+            buf[hasRead]='\0';
+            close(sockfd);
+            break;
+        }
+        hasRead += n;
         time++;
         fprintf(stdout, "1K read for %d \n", time);
         usleep(1000);
-        
     }
+    
+    NSLog(@"buf = %s",buf);
 }
 
 
@@ -91,6 +99,8 @@
         NSLog(@"connect failed ");
     }
     [self sendData:sockfd];
+    
+    [self read:sockfd];
 }
 
 - (void)sendData:(int) sockfd

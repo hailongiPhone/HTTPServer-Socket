@@ -13,6 +13,7 @@
 typedef enum : NSUInteger {
     PackageTypeTest,
     PackageTypeTestTerminal,
+    PackageTypeTestWrite,
 } PackageType;
 
 @interface HLHTTPServer () <HLSocketServerDelegate>
@@ -58,7 +59,7 @@ typedef enum : NSUInteger {
             break;
         case PackageTypeTestTerminal:
             NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
-            [connect writePackage:<#(nonnull HLPackageWriter *)#> packageTag:<#(NSInteger)#>]
+            [self responseTestDataConnect:connect];
             break;
         default:
             break;
@@ -67,7 +68,7 @@ typedef enum : NSUInteger {
 
 - (void) connect:(HLSocketConnect *)connect writePackageData:(NSData*)data packageTag:(NSInteger)tag;
 {
-    
+    NSLog(@"data = %@",data);
 }
 
 - (void) connect:(HLSocketConnect *)connect;
@@ -84,5 +85,10 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark -
-- (void) respon;
+- (void) responseTestDataConnect:(HLSocketConnect *)connect;
+{
+    NSData * data = [@"<html><body>H1hahah</body></html>" dataUsingEncoding:NSUTF8StringEncoding];
+    HLPackageWriter * package = [HLPackageWriter packageWithData:data tag:PackageTypeTestWrite];
+    [connect writePackage:package packageTag:PackageTypeTestWrite];
+}
 @end

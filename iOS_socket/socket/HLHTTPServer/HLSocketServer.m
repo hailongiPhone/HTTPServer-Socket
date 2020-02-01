@@ -162,7 +162,11 @@
 
 - (void) connect:(HLSocketConnect *)connect writePackageData:(NSData*)data packageTag:(NSInteger)tag;
 {
-    
+    if (self.delegate) {
+           [self runBlockOnDelegateQueue:^{
+               [self.delegate connect:connect writePackageData:data packageTag:tag];
+           }];
+       }
 }
 
 - (void) connectClosed:(HLSocketConnect *)connect;
