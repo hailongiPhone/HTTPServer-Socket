@@ -39,8 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 //    long tag;
 }
 
-+(instancetype)packageReadWithFixLength:(NSInteger)length;
-+(instancetype)packageReadWithTerminator:(NSString *)string;
++(instancetype)packageReadWithFixLength:(NSInteger)length tag:(NSInteger)tag;
++(instancetype)packageReadWithTerminator:(NSString *)string tag:(NSInteger)tag;
 
 - (BOOL)hasTerminator;
 - (NSUInteger)readLengthForData:(uint8_t *)data availableLength:(NSUInteger)bytesAvailable;

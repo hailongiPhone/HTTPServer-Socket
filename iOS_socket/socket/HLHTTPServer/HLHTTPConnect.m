@@ -8,15 +8,13 @@
 
 #import "HLHTTPConnect.h"
 #import "HLPackageRead.h"
+#import "HLHTTPRequestHandler.h"
 
-typedef enum : NSUInteger {
-    PackageTypeTest,
-    PackageTypeTestTerminal,
-    PackageTypeTestWrite,
-} PackageType;
+
 
 @interface HLHTTPConnect ()
 @property (nonatomic,strong) HLSocketConnect * socketConnect;
+@property (nonatomic,strong) HLHTTPRequestHandler * requestHandler;
 @end
 
 
@@ -32,24 +30,21 @@ typedef enum : NSUInteger {
 
 - (void)connect;
 {
-       [self.socketConnect readPackage:[HLPackageRead packageReadWithTerminator:@"bbb"]
-                    packageTag:PackageTypeTestTerminal];
-          [self.socketConnect readPackage:[HLPackageRead packageReadWithFixLength:100]
-                    packageTag:PackageTypeTest];
+    self.requestHandler = [HLHTTPRequestHandler new];
+    
+    HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
+    [self.socketConnect readPackage:packageHeader];
 }
 
 - (void)disconnect;
 {
-    
+    self.socketConnect = nil;
 }
 
 - (void)readPackageData:(NSData*)data packageTag:(NSInteger)tag;
 {
     switch (tag) {
-        case PackageTypeTest:
-            NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
-            break;
-        case PackageTypeTestTerminal:
+        case HLRequestPackageTagHeader:
             NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
             [self responseTestDataConnect:self.socketConnect];
             break;

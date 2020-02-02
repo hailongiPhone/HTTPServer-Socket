@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HLHTTPHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HLHTTPRequest : NSObject
-
+@property (nonatomic,strong) HLHTTPHeaderRequest * header;
+@property (nonatomic,strong) NSData * body;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -36,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype) initWithSocketFD:(int)fd;
 @property (nonatomic,weak) id<HLSocketConnectDelegate> delegate;
 
-- (void) readPackage:(HLPackageRead *)package packageTag:(NSInteger)tag;
-- (void) writePackage:(HLPackageWriter *)package packageTag:(NSInteger)tag;
+- (void) readPackage:(HLPackageRead *)package;
+- (void) writePackage:(HLPackageWriter *)package;
 //启动监听事件
 - (void)start;
 - (void)stop;
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setDelegate:(id<HLSocketConnectDelegate> _Nullable)delegate
 callbackQueue:(dispatch_queue_t)callbackQueue;
 
-- (id)copyWithZone:(NSZone *)zone;
+- (id)copyWithZone:(NSZone * _Nullable)zone;
 @end
 
 NS_ASSUME_NONNULL_END

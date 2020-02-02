@@ -234,20 +234,18 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 }
 
 #pragma mark - Interface
-- (void) readPackage:(HLPackageRead *)package packageTag:(NSInteger)tag;
+- (void) readPackage:(HLPackageRead *)package;
 {
     [self asyncRunOnQueue:^{
         HLSocketReader * reader = [self lazySocketReader];
-        package.tag = tag;
         [reader addPackageReader:package];
     }];
 }
 
-- (void) writePackage:(HLPackageWriter *)package packageTag:(NSInteger)tag;
+- (void) writePackage:(HLPackageWriter *)package;
 {
     [self asyncRunOnQueue:^{
         HLSocketWriter * writer = [self lazySockerWrier];
-        package.tag = tag;
         [writer addPackageWriter:package];
         
         if (self.writeState == SocketConnectStateWritingSuspend) {

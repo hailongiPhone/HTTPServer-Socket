@@ -41,7 +41,8 @@
 
 - (IBAction)onTapButton:(id)sender {
     
-    [self.bs setupClinetTCP];
+//    [self.bs setupClinetTCP];
+    [self requestWithCFNetwork];
 //    [[self class] stopCFStreamThreadIfNeeded];
     
 //    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"da bao" message:@"Aa" preferredStyle:UIAlertControllerStyleAlert];
@@ -129,4 +130,57 @@ static NSThread *cfstreamThread;  // Used for CFStreams
     }
 
 }}
+
+
+#pragma mark - Request
+
+//#define SERVER_PORT 55667
+//#define SERVER_ADD  "127.0.0.1"
+- (void)requestWithCFNetwork
+{
+//创建请求
+    CFStringRef url = CFSTR("http://127.0.0.1:55667");
+    CFURLRef myURL = CFURLCreateWithString(kCFAllocatorDefault, url, NULL);
+    
+    CFStringRef requestMethod = CFSTR("POST");
+    CFHTTPMessageRef myRequest =
+    CFHTTPMessageCreateRequest(kCFAllocatorDefault, requestMethod, myURL,
+                               kCFHTTPVersion1_1);
+// 设置body
+    NSData *dataToPost = [@"apptoken=-1" dataUsingEncoding:NSUTF8StringEncoding];
+    CFHTTPMessageSetBody(myRequest, (__bridge CFDataRef) dataToPost);
+// 设置header
+CFHTTPMessageSetHeaderFieldValue(myRequest, CFSTR("Content-Type"), CFSTR("application/x-www-form-urlencoded; charset=utf-8"));
+
+//创建流并开启
+    CFReadStreamRef requestStream = CFReadStreamCreateForHTTPRequest(NULL, myRequest);
+    CFReadStreamOpen(requestStream);
+    //接收响应
+    NSMutableData *responseBytes = [NSMutableData data];
+    CFIndex numBytesRead = 0;
+    do {
+        UInt8 buf[1024];
+        numBytesRead = CFReadStreamRead(requestStream, buf, sizeof(buf));
+        
+        if (numBytesRead > 0) {
+            [responseBytes appendBytes:buf length:numBytesRead];
+        }
+    } while (numBytesRead > 0);
+    
+    CFHTTPMessageRef response = (CFHTTPMessageRef) CFReadStreamCopyProperty(requestStream, kCFStreamPropertyHTTPResponseHeader);
+    CFHTTPMessageSetBody(response, (__bridge CFDataRef)responseBytes);
+    CFReadStreamClose(requestStream);
+    CFRelease(requestStream);
+    CFAutorelease(response);
+
+//转换为JSON
+    CFIndex statusCode;
+    statusCode = CFHTTPMessageGetResponseStatusCode(response);
+    CFDataRef responseDataRef = CFHTTPMessageCopyBody(response);
+    NSData *responseData = (__bridge NSData *)responseDataRef;
+    NSMutableDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+
+    NSLog(@"responseBody: %@", jsonInfo);
+}
 @end
+

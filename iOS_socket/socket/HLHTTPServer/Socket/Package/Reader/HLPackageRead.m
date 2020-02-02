@@ -14,16 +14,18 @@
 
 @implementation HLPackageRead
 
-+(instancetype)packageReadWithFixLength:(NSInteger)length;
++(instancetype)packageReadWithFixLength:(NSInteger)length tag:(NSInteger)tag;
 {
     HLPackageRead * result = [HLPackageRead new];
     [result setupWithFixeLength:length];
+    result.tag = tag;
     return result;
 }
-+(instancetype)packageReadWithTerminator:(NSString *)string;
++(instancetype)packageReadWithTerminator:(NSString *)string tag:(NSInteger)tag;
 {
     HLPackageRead * result = [HLPackageRead new];
     [result setupWithTerminator:string];
+    result.tag = tag;
     return result;
 }
 
