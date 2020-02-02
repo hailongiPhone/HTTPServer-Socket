@@ -9,5 +9,12 @@
 #import "HLHTTPResponse.h"
 
 @implementation HLHTTPResponse
-
+- (HLPackageWriter *)writerPackageForHeaderInfo;
+{
+    return nil;
+}
+- (HLPackageWriter *)writerPackageBody;
+{
+    return nil;
+}
 @end

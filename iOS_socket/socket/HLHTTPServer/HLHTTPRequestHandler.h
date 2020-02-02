@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hasBody;
 
 - (BOOL)hasDone;
+
+- (HLHTTPHeaderRequest *)requestHeader;
 @end
 
 NS_ASSUME_NONNULL_END

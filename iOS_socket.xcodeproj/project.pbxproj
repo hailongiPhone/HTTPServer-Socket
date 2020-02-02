@@ -21,6 +21,8 @@
 		D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */; };
 		D9AF6BB223E6C0DE007DCE98 /* HLHTTPRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BB123E6C0DE007DCE98 /* HLHTTPRequestHandler.m */; };
 		D9AF6BB523E74724007DCE98 /* HLHTTPResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BB423E74724007DCE98 /* HLHTTPResponseHandler.m */; };
+		D9AF6BB823E74F9E007DCE98 /* HLHTTPResponseResource.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BB723E74F9E007DCE98 /* HLHTTPResponseResource.m */; };
+		D9AF6BBB23E74FC4007DCE98 /* HLHTTPResponsePOST.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BBA23E74FC4007DCE98 /* HLHTTPResponsePOST.m */; };
 		D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C745FD23E2A3B60080851E /* HLPackageRead.m */; };
 		D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C7460023E2B59E0080851E /* HLSocketReader.m */; };
 		D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B323CC45110051045E /* AppDelegate.m */; };
@@ -64,6 +66,10 @@
 		D9AF6BB123E6C0DE007DCE98 /* HLHTTPRequestHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPRequestHandler.m; sourceTree = "<group>"; };
 		D9AF6BB323E74724007DCE98 /* HLHTTPResponseHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPResponseHandler.h; sourceTree = "<group>"; };
 		D9AF6BB423E74724007DCE98 /* HLHTTPResponseHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPResponseHandler.m; sourceTree = "<group>"; };
+		D9AF6BB623E74F9E007DCE98 /* HLHTTPResponseResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPResponseResource.h; sourceTree = "<group>"; };
+		D9AF6BB723E74F9E007DCE98 /* HLHTTPResponseResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPResponseResource.m; sourceTree = "<group>"; };
+		D9AF6BB923E74FC4007DCE98 /* HLHTTPResponsePOST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPResponsePOST.h; sourceTree = "<group>"; };
+		D9AF6BBA23E74FC4007DCE98 /* HLHTTPResponsePOST.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPResponsePOST.m; sourceTree = "<group>"; };
 		D9C745FC23E2A3B60080851E /* HLPackageRead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPackageRead.h; sourceTree = "<group>"; };
 		D9C745FD23E2A3B60080851E /* HLPackageRead.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPackageRead.m; sourceTree = "<group>"; };
 		D9C745FF23E2B59E0080851E /* HLSocketReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketReader.h; sourceTree = "<group>"; };
@@ -162,6 +168,10 @@
 				D93B041923D57B7700977A75 /* HLHTTPRequest.m */,
 				D93B041B23D57B9500977A75 /* HLHTTPResponse.h */,
 				D93B041C23D57B9500977A75 /* HLHTTPResponse.m */,
+				D9AF6BB923E74FC4007DCE98 /* HLHTTPResponsePOST.h */,
+				D9AF6BBA23E74FC4007DCE98 /* HLHTTPResponsePOST.m */,
+				D9AF6BB623E74F9E007DCE98 /* HLHTTPResponseResource.h */,
+				D9AF6BB723E74F9E007DCE98 /* HLHTTPResponseResource.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -310,7 +320,9 @@
 				D9AF6BB223E6C0DE007DCE98 /* HLHTTPRequestHandler.m in Sources */,
 				D9F7A6BA23CC45110051045E /* ViewController.m in Sources */,
 				D9AF6BB523E74724007DCE98 /* HLHTTPResponseHandler.m in Sources */,
+				D9AF6BB823E74F9E007DCE98 /* HLHTTPResponseResource.m in Sources */,
 				D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */,
+				D9AF6BBB23E74FC4007DCE98 /* HLHTTPResponsePOST.m in Sources */,
 				D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */,
 				D9F7A6C523CC45130051045E /* main.m in Sources */,
 				D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */,

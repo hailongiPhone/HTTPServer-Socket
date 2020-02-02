@@ -9,12 +9,14 @@
 #import "HLHTTPConnect.h"
 #import "HLPackageRead.h"
 #import "HLHTTPRequestHandler.h"
+#import "HLHTTPResponseHandler.h"
 
 
 
 @interface HLHTTPConnect ()
 @property (nonatomic,strong) HLSocketConnect * socketConnect;
 @property (nonatomic,strong) HLHTTPRequestHandler * requestHandler;
+@property (nonatomic,strong) HLHTTPResponseHandler * responseHandler;
 @end
 
 
@@ -81,11 +83,12 @@
     }
     
     //常见handler
-//    self.responseHandeler = [ZGHTTPResponseHandeler initWithRequestHead:_requestHandler.requestHead
-//                                                               delegate:_config.responseDelegate
-//                                                                rootDir:_config.rootDirectory];
-//
-//    [_socket writeData:[_responseHandeler readAllHeadData] withTimeout:kZGHTTPConnectTimeout tag:kZGHTTPResponseHeadTag];
+    self.responseHandler = [HLHTTPResponseHandler responseHandlerWithRequestHeader:[self.requestHandler requestHeader]];
+    [self.socketConnect writePackage:[self.responseHandler writerPackageForHeaderInfo]];
+    HLPackageWriter * body = [self.responseHandler writerPackageBody];
+    if (body) {
+        [self.socketConnect writePackage:body];
+    }
 }
 
 #pragma mark -

@@ -1,5 +1,5 @@
 //
-//  HLHTTPResponseHandler.h
+//  HLHTTPResponseResource.h
 //  iOS_socket
 //
 //  Created by hailong on 2020/02/03.
@@ -7,21 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import "HLHTTPHeader.h"
-#import "HLPackageWriter.h"
-
-
+#import "HLHTTPResponse.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HLHTTPResponseHandler : NSObject
-@property(nonatomic,strong) HLHTTPHeaderRequest * requestHeader;
-
+@interface HLHTTPResponseResource : HLHTTPResponse
 +(instancetype)responseHandlerWithRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
-
-- (HLPackageWriter *)writerPackageForHeaderInfo;
-- (HLPackageWriter *)writerPackageBody;
 @end
 
 NS_ASSUME_NONNULL_END

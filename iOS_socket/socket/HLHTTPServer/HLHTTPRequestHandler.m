@@ -65,6 +65,11 @@
     
     return hasDone;
 }
+
+- (HLHTTPHeaderRequest *)requestHeader;
+{
+    return [[self lazyRequest] header];
+}
 #pragma mark - ParseHeader
 //手动解析，也可以使用CFNetwork解析
 /*
