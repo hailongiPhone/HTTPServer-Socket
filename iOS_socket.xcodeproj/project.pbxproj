@@ -20,6 +20,7 @@
 		D9969B5123E5C665000B0FDB /* HLHTTPConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B5023E5C665000B0FDB /* HLHTTPConnect.m */; };
 		D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */; };
 		D9AF6BB223E6C0DE007DCE98 /* HLHTTPRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BB123E6C0DE007DCE98 /* HLHTTPRequestHandler.m */; };
+		D9AF6BB523E74724007DCE98 /* HLHTTPResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BB423E74724007DCE98 /* HLHTTPResponseHandler.m */; };
 		D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C745FD23E2A3B60080851E /* HLPackageRead.m */; };
 		D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C7460023E2B59E0080851E /* HLSocketReader.m */; };
 		D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B323CC45110051045E /* AppDelegate.m */; };
@@ -61,6 +62,8 @@
 		D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPreBuffer.m; sourceTree = "<group>"; };
 		D9AF6BB023E6C0DE007DCE98 /* HLHTTPRequestHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPRequestHandler.h; sourceTree = "<group>"; };
 		D9AF6BB123E6C0DE007DCE98 /* HLHTTPRequestHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPRequestHandler.m; sourceTree = "<group>"; };
+		D9AF6BB323E74724007DCE98 /* HLHTTPResponseHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPResponseHandler.h; sourceTree = "<group>"; };
+		D9AF6BB423E74724007DCE98 /* HLHTTPResponseHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPResponseHandler.m; sourceTree = "<group>"; };
 		D9C745FC23E2A3B60080851E /* HLPackageRead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPackageRead.h; sourceTree = "<group>"; };
 		D9C745FD23E2A3B60080851E /* HLPackageRead.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPackageRead.m; sourceTree = "<group>"; };
 		D9C745FF23E2B59E0080851E /* HLSocketReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketReader.h; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 				D93B041523D57AEC00977A75 /* HLHTTPServer.m */,
 				D9969B4F23E5C665000B0FDB /* HLHTTPConnect.h */,
 				D9969B5023E5C665000B0FDB /* HLHTTPConnect.m */,
+				D9AF6BB323E74724007DCE98 /* HLHTTPResponseHandler.h */,
+				D9AF6BB423E74724007DCE98 /* HLHTTPResponseHandler.m */,
 				D9AF6BB023E6C0DE007DCE98 /* HLHTTPRequestHandler.h */,
 				D9AF6BB123E6C0DE007DCE98 /* HLHTTPRequestHandler.m */,
 				D9969B4623E5B470000B0FDB /* Socket */,
@@ -304,6 +309,7 @@
 				D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */,
 				D9AF6BB223E6C0DE007DCE98 /* HLHTTPRequestHandler.m in Sources */,
 				D9F7A6BA23CC45110051045E /* ViewController.m in Sources */,
+				D9AF6BB523E74724007DCE98 /* HLHTTPResponseHandler.m in Sources */,
 				D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */,
 				D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */,
 				D9F7A6C523CC45130051045E /* main.m in Sources */,

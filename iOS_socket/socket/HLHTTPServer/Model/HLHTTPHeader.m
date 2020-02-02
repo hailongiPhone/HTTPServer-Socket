@@ -13,7 +13,20 @@
 @end
 
 @implementation HLHTTPHeaderRequest
+- (BOOL)hasBody;
+{
+    return self.contentLength >0;
+}
 
+- (NSString *)fileName;
+{
+    NSString * fromPath = [self.path lastPathComponent];
+    fromPath = [fromPath stringByReplacingOccurrencesOfString:@"/" withString:@""];
+    if ([fromPath length] < 1) {
+        fromPath = @"1";
+    }
+    return fromPath;
+}
 @end
 
 @implementation HLHTTPHeaderResponse

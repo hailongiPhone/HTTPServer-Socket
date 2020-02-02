@@ -20,10 +20,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSString *method;
 @property(nonatomic, strong) NSString *path;
 @property(nonatomic, strong) NSString *host;
+@property(nonatomic, assign) u_int64_t contentLength;
+
+- (BOOL)hasBody;
+- (NSString *)fileName;
+
 @end
 
 @interface HLHTTPHeaderResponse : HLHTTPHeader
-@property(nonatomic, strong) NSInteger stateCode;
+@property(nonatomic, assign) NSInteger stateCode;
 @property(nonatomic, strong) NSString *stateDesc;
 @end
 

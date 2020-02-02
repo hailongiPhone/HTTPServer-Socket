@@ -45,8 +45,24 @@
 {
     switch (tag) {
         case HLRequestPackageTagHeader:
-            NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
-            [self responseTestDataConnect:self.socketConnect];
+        {
+            NSLog(@"Header == %@",[NSString stringWithUTF8String:[data bytes]]);
+            [self.requestHandler onReciveHeadData:data];
+            HLPackageRead * packageBody = [self.requestHandler readPackageBody];
+            if (packageBody) {
+                [self.socketConnect readPackage:packageBody];
+            }else{
+                [self tryToReplyToHTTPRequest];
+            }
+        }
+            break;
+        case HLRequestPackageTagBody:
+        {
+            NSLog(@"Body == %@",[NSString stringWithUTF8String:[data bytes]]);
+            [self.requestHandler onReciveBodyData:data];
+            
+            [self tryToReplyToHTTPRequest];
+        }
             break;
         default:
             break;
@@ -58,12 +74,26 @@
     
 }
 
+- (void)tryToReplyToHTTPRequest
+{
+    if (![self.requestHandler hasDone]) {
+        return;
+    }
+    
+    //常见handler
+//    self.responseHandeler = [ZGHTTPResponseHandeler initWithRequestHead:_requestHandler.requestHead
+//                                                               delegate:_config.responseDelegate
+//                                                                rootDir:_config.rootDirectory];
+//
+//    [_socket writeData:[_responseHandeler readAllHeadData] withTimeout:kZGHTTPConnectTimeout tag:kZGHTTPResponseHeadTag];
+}
+
 #pragma mark -
 #pragma mark -
 - (void) responseTestDataConnect:(HLSocketConnect *)connect;
 {
     NSData * data = [@"<html><body>H1hahah</body></html>" dataUsingEncoding:NSUTF8StringEncoding];
-    HLPackageWriter * package = [HLPackageWriter packageWithData:data tag:PackageTypeTestWrite];
-    [connect writePackage:package packageTag:PackageTypeTestWrite];
+    HLPackageWriter * package = [HLPackageWriter packageWithData:data tag:1];
+    [connect writePackage:package];
 }
 @end

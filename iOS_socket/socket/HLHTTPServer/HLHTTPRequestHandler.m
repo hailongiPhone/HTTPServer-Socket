@@ -11,6 +11,7 @@
 @interface HLHTTPRequestHandler ()
 @property(nonatomic,strong) HLHTTPRequest * request;
 @property(nonatomic,assign) CFHTTPMessageRef message;
+@property(nonatomic,assign) BOOL waitingBodyData;
 @end
 
 @implementation HLHTTPRequestHandler
@@ -23,16 +24,22 @@
 
 - (HLPackageRead *)readPackageBody;
 {
-    return [HLPackageRead packageReadWithTerminator:@"\r\n\r\n" tag:HLRequestPackageTagHeader];
+    if (![self hasBody]) {
+        return nil;
+    }
+    return [HLPackageRead packageReadWithFixLength:[[self lazyRequest] header].contentLength
+                                               tag:HLRequestPackageTagBody];
 }
 
 - (BOOL)onReciveHeadData:(NSData *)data;
 {
     [self parseHeaderInfo:data];
+    self.waitingBodyData = [self hasBody];
     return YES;
 }
 - (BOOL)onReciveBodyData:(NSData *)data;
 {
+    [self bodySaveAsFile:data];
     return YES;
 }
 
@@ -44,8 +51,31 @@
     }
 }
 
+- (BOOL)hasBody;
+{
+    return [[[self lazyRequest] header] hasBody];
+}
+
+- (BOOL)hasDone;
+{
+    BOOL hasDone = [[self lazyRequest] header] != nil;
+    if (self.hasBody) {
+        hasDone = !self.waitingBodyData;
+    }
+    
+    return hasDone;
+}
 #pragma mark - ParseHeader
 //手动解析，也可以使用CFNetwork解析
+/*
+GET /minion.png HTTP/1.1 // 包含了请求方法、请求资源路径、HTTP协议版本
+Host: 120.25.226.186:32812 // 客户端想访问的服务器主机地址
+User-Agent: Mozilla/5.0 // 客户端的类型，客户端的软件环境
+Accept: text/html // 客户端所能接收的数据类型
+Accept-Language: zh-cn // 客户端的语言环境
+Accept-Encoding: gzip // 客户端支持的数据压缩格式
+*/
+
 - (void)parseHeaderInfo:(NSData *)data;
 {
     NSString *headStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -83,21 +113,55 @@
     }];
     
     header.host = head[@"Host"];
+    
+    NSString * length = [head valueForKey:@"Content-Length"];
+    if (length) {
+        header.contentLength = strtoull([length UTF8String], NULL, 0);
+    }
+    
     header.headDic = head;
     
-    
+    [[self lazyRequest] setHeader:header];
 }
 
+- (HLHTTPRequest *)lazyRequest;
+{
+    if (!self.request) {
+        self.request = [HLHTTPRequest new];
+    }
+    
+    return self.request;
+}
 
 #pragma mark - work with CFNetwork
 - (void)parseRequestWithCFNetwork:(NSData *)data;
 {
-    CFHTTPMessageRef message = CFHTTPMessageCreateEmpty(NULL, YES);
-    CFHTTPMessageAppendBytes(message, [data bytes], [data length]);
-//    message = CFHTTPMessageCreateRequest(NULL,
-//    (__bridge CFStringRef)method,
-//    (__bridge CFURLRef)url,
-//    (__bridge CFStringRef)version);
+    if(!self.message){
+        self.message = CFHTTPMessageCreateEmpty(NULL, YES);
+        //    message = CFHTTPMessageCreateRequest(NULL,
+        //    (__bridge CFStringRef)method,
+        //    (__bridge CFURLRef)url,
+        //    (__bridge CFStringRef)version);
+    }
+    
+    CFHTTPMessageAppendBytes(self.message, [data bytes], [data length]);
+
+    if (!CFHTTPMessageIsHeaderComplete(self.message)) {
+        return;
+    }
+    HLHTTPHeaderRequest * header = [HLHTTPHeaderRequest new];
+    header.method = [self method];
+    header.path = [[self url] absoluteString];
+    header.version = [self version];
+    
+    header.host = [self headerField:@"Host"];
+    NSString * length = [self headerField:@"Content-Length"];
+    if (length) {
+        header.contentLength = strtoull([length UTF8String], NULL, 0);
+    }
+    header.headDic = [self allHeaderFields];
+    
+    [[self lazyRequest] setHeader:header];
 }
 
 - (BOOL)isHeaderComplete
@@ -158,5 +222,21 @@
 }
 
 
-
+#pragma mark - Body
+//最简单处理--保存到一个默认文件夹
+- (void)bodySaveAsFile:(NSData *)body;
+{
+    NSArray *paths =
+    NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                        NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    
+    HLHTTPHeaderRequest * header = [[self lazyRequest] header];
+    NSString * path = [documentsDirectory stringByAppendingPathComponent:header.fileName];
+    
+    BOOL written = [body writeToFile:path options:NSDataWritingAtomic error:nil];
+    NSLog(@"written");
+    
+    self.waitingBodyData = NO;
+}
 @end

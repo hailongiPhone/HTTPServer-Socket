@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)onReciveHeadData:(NSData *)data;
 - (BOOL)onReciveBodyData:(NSData *)data;
+
+- (BOOL)hasBody;
+
+- (BOOL)hasDone;
 @end
 
 NS_ASSUME_NONNULL_END
