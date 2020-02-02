@@ -40,6 +40,8 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 @property(nonatomic,strong) HLSocketWriter * writer;
 @property(nonatomic,assign) SocketConnectState readState;
 @property(nonatomic,assign) SocketConnectState writeState;
+
+@property (nonatomic,strong) dispatch_queue_t delegateQueue;
 @end
 
 @implementation HLSocketConnect
@@ -327,5 +329,18 @@ static int kQueueKey;
             block();
         });
     }
+}
+
+
+-(void)setDelegate:(id<HLSocketConnectDelegate> _Nullable)delegate
+callbackQueue:(dispatch_queue_t)callbackQueue;
+{
+    self.delegate = delegate;
+    self.delegateQueue = callbackQueue;
+}
+
+- (id)copyWithZone:(NSZone *)zone{
+    
+    return self;
 }
 @end

@@ -15,6 +15,9 @@
 		D9969B3E23E5903F000B0FDB /* HLSocketWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B3D23E5903F000B0FDB /* HLSocketWriter.m */; };
 		D9969B4123E5906E000B0FDB /* HLPackageWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B4023E5906E000B0FDB /* HLPackageWriter.m */; };
 		D9969B4523E5A750000B0FDB /* HLPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B4423E5A750000B0FDB /* HLPackage.m */; };
+		D9969B4A23E5B8E3000B0FDB /* HLHTTPServerConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B4923E5B8E3000B0FDB /* HLHTTPServerConfig.m */; };
+		D9969B4E23E5BA1F000B0FDB /* HLHTTPHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B4D23E5BA1F000B0FDB /* HLHTTPHeader.m */; };
+		D9969B5123E5C665000B0FDB /* HLHTTPConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = D9969B5023E5C665000B0FDB /* HLHTTPConnect.m */; };
 		D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */; };
 		D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C745FD23E2A3B60080851E /* HLPackageRead.m */; };
 		D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C7460023E2B59E0080851E /* HLSocketReader.m */; };
@@ -46,6 +49,13 @@
 		D9969B4023E5906E000B0FDB /* HLPackageWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPackageWriter.m; sourceTree = "<group>"; };
 		D9969B4323E5A750000B0FDB /* HLPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPackage.h; sourceTree = "<group>"; };
 		D9969B4423E5A750000B0FDB /* HLPackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPackage.m; sourceTree = "<group>"; };
+		D9969B4823E5B8E3000B0FDB /* HLHTTPServerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPServerConfig.h; sourceTree = "<group>"; };
+		D9969B4923E5B8E3000B0FDB /* HLHTTPServerConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPServerConfig.m; sourceTree = "<group>"; };
+		D9969B4B23E5B951000B0FDB /* HLHTTPServerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPServerDelegate.h; sourceTree = "<group>"; };
+		D9969B4C23E5BA1F000B0FDB /* HLHTTPHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPHeader.h; sourceTree = "<group>"; };
+		D9969B4D23E5BA1F000B0FDB /* HLHTTPHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPHeader.m; sourceTree = "<group>"; };
+		D9969B4F23E5C665000B0FDB /* HLHTTPConnect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHTTPConnect.h; sourceTree = "<group>"; };
+		D9969B5023E5C665000B0FDB /* HLHTTPConnect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHTTPConnect.m; sourceTree = "<group>"; };
 		D9A12C3723D68E1F0072BCA3 /* HLPreBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPreBuffer.h; sourceTree = "<group>"; };
 		D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLPreBuffer.m; sourceTree = "<group>"; };
 		D9C745FC23E2A3B60080851E /* HLPackageRead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLPackageRead.h; sourceTree = "<group>"; };
@@ -85,8 +95,15 @@
 		D93B041423D57AEC00977A75 /* HLHTTPServer */ = {
 			isa = PBXGroup;
 			children = (
+				D9969B4B23E5B951000B0FDB /* HLHTTPServerDelegate.h */,
+				D9969B4C23E5BA1F000B0FDB /* HLHTTPHeader.h */,
+				D9969B4D23E5BA1F000B0FDB /* HLHTTPHeader.m */,
+				D9969B4823E5B8E3000B0FDB /* HLHTTPServerConfig.h */,
+				D9969B4923E5B8E3000B0FDB /* HLHTTPServerConfig.m */,
 				D93B041623D57AEC00977A75 /* HLHTTPServer.h */,
 				D93B041523D57AEC00977A75 /* HLHTTPServer.m */,
+				D9969B4F23E5C665000B0FDB /* HLHTTPConnect.h */,
+				D9969B5023E5C665000B0FDB /* HLHTTPConnect.m */,
 				D93B041823D57B7700977A75 /* HLHTTPRequest.h */,
 				D93B041923D57B7700977A75 /* HLHTTPRequest.m */,
 				D93B041B23D57B9500977A75 /* HLHTTPResponse.h */,
@@ -279,10 +296,13 @@
 				D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */,
 				D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */,
 				D9969B4123E5906E000B0FDB /* HLPackageWriter.m in Sources */,
+				D9969B4E23E5BA1F000B0FDB /* HLHTTPHeader.m in Sources */,
+				D9969B4A23E5B8E3000B0FDB /* HLHTTPServerConfig.m in Sources */,
 				D93B041D23D57B9500977A75 /* HLHTTPResponse.m in Sources */,
 				D93B041723D57AEC00977A75 /* HLHTTPServer.m in Sources */,
 				D9F7A6D123CC64710051045E /* BaseSocket.m in Sources */,
 				D93B042023D5888B00977A75 /* HLSocketServer.m in Sources */,
+				D9969B5123E5C665000B0FDB /* HLHTTPConnect.m in Sources */,
 				D9F7A6D423CC71E30051045E /* IPAddress.c in Sources */,
 				D9969B4523E5A750000B0FDB /* HLPackage.m in Sources */,
 				D93B041A23D57B7700977A75 /* HLHTTPRequest.m in Sources */,

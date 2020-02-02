@@ -9,17 +9,16 @@
 #import "HLHTTPServer.h"
 #import "HLSocketServer.h"
 #import "HLSocketConnect.h"
+#import "HLHTTPConnect.h"
 
-typedef enum : NSUInteger {
-    PackageTypeTest,
-    PackageTypeTestTerminal,
-    PackageTypeTestWrite,
-} PackageType;
+
 
 @interface HLHTTPServer () <HLSocketServerDelegate>
 
 @property (nonatomic,strong)HLSocketServer * socketServer;
 @property (nonatomic,strong)dispatch_queue_t socketCallbackQueue;
+
+@property (nonatomic,strong)NSMutableDictionary * connectMap;
 @end
 
 @implementation HLHTTPServer
@@ -41,6 +40,8 @@ typedef enum : NSUInteger {
 #pragma mark - Socket
 - (void)setupSocketServer;
 {
+    self.connectMap = [[NSMutableDictionary alloc] initWithCapacity:100];
+    
     self.socketServer = [HLSocketServer new];
     self.socketCallbackQueue = dispatch_queue_create("HLHTTPServerSocetCallbackQueue", NULL);
     [self.socketServer setDelegate:self
@@ -53,42 +54,41 @@ typedef enum : NSUInteger {
 
 - (void) connect:(HLSocketConnect *)connect readPackageData:(NSData*)data packageTag:(NSInteger)tag;
 {
-    switch (tag) {
-        case PackageTypeTest:
-            NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
-            break;
-        case PackageTypeTestTerminal:
-            NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
-            [self responseTestDataConnect:connect];
-            break;
-        default:
-            break;
-    }
+    HLHTTPConnect * httpConnect =  [self httpConnectForSocketConnect:connect];
+    [httpConnect readPackageData:data packageTag:tag];
 }
 
 - (void) connect:(HLSocketConnect *)connect writePackageData:(NSData*)data packageTag:(NSInteger)tag;
 {
     NSLog(@"data = %@",data);
+    
+    HLHTTPConnect * httpConnect =  [self httpConnectForSocketConnect:connect];
+    [httpConnect writeDonePackageTag:tag];
 }
 
 - (void) connect:(HLSocketConnect *)connect;
 {
-    [connect readPackage:[HLPackageRead packageReadWithTerminator:@"bbb"]
-              packageTag:PackageTypeTestTerminal];
-    [connect readPackage:[HLPackageRead packageReadWithFixLength:100]
-              packageTag:PackageTypeTest];
+    HLHTTPConnect * httpConnect =  [self httpConnectForSocketConnect:connect];
+    [httpConnect connect];
 }
 
 - (void) connectClosed:(HLSocketConnect *)connect;
 {
-    
+    HLHTTPConnect * httpConnect =  [self httpConnectForSocketConnect:connect];
+    [httpConnect disconnect];
+    [self.connectMap removeObjectForKey:connect];
 }
 
-#pragma mark -
-- (void) responseTestDataConnect:(HLSocketConnect *)connect;
+
+#pragma mark - Connect map
+- (HLHTTPConnect *) httpConnectForSocketConnect:(HLSocketConnect *)socketConnect;
 {
-    NSData * data = [@"<html><body>H1hahah</body></html>" dataUsingEncoding:NSUTF8StringEncoding];
-    HLPackageWriter * package = [HLPackageWriter packageWithData:data tag:PackageTypeTestWrite];
-    [connect writePackage:package packageTag:PackageTypeTestWrite];
+    HLHTTPConnect * httpConnect = [self.connectMap objectForKey:socketConnect];
+    if (!httpConnect) {
+        httpConnect = [[HLHTTPConnect alloc] initWith:socketConnect];
+        [self.connectMap setObject:httpConnect forKey:socketConnect];
+    }
+    
+    return httpConnect;
 }
 @end

@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface HLSocketConnect : NSObject
+@interface HLSocketConnect : NSObject <NSCopying>
 @property(nonatomic,assign) int socketFD;
 
 
@@ -43,6 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stop;
 
 - (void)disconnect;
+
+-(void)setDelegate:(id<HLSocketConnectDelegate> _Nullable)delegate
+callbackQueue:(dispatch_queue_t)callbackQueue;
+
+- (id)copyWithZone:(NSZone *)zone;
 @end
 
 NS_ASSUME_NONNULL_END
