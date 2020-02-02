@@ -65,6 +65,10 @@
     <body>\
     <p>body 元素的内容会显示在浏览器中。</p>\
     <p>title 元素的内容会显示在浏览器的标题栏中。</p>\
+    <form action='hl' method='post' enctype='multipart/form-data'>\
+        <p><input type='file' name='upload'></p>\
+        <p><input type='submit' value='submit'></p>\
+    </form>\
     </body>\
     </html>";
     
