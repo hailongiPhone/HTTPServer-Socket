@@ -24,7 +24,7 @@
 
 - (HLPackageWriter *)writerPackageForHeaderInfo;
 {
-    self.response = [HLHTTPResponseResource responseHandlerWithRequestHeader:self.requestHeader];
+    self.response = [HLHTTPResponse responseHandlerWithRequestHeader:self.requestHeader];
     
     return [self.response writerPackageForHeaderInfo];
 }

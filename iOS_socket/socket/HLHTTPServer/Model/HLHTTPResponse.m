@@ -7,6 +7,8 @@
 //
 
 #import "HLHTTPResponse.h"
+#import "HLHTTPResponsePOST.h"
+#import "HLHTTPResponseResource.h"
 
 @implementation HLHTTPResponse
 - (HLPackageWriter *)writerPackageForHeaderInfo;
@@ -15,6 +17,20 @@
 }
 - (HLPackageWriter *)writerPackageBody;
 {
+    return nil;
+}
+
++ (HLHTTPResponse *)responseHandlerWithRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
+{
+    if ([requestHeader.method isEqualToString:@"GET"]) {
+        return [HLHTTPResponseResource responseHandlerWithRequestHeader:requestHeader];
+    }
+    
+    if ([requestHeader.method isEqualToString:@"POST"]) {
+        return [HLHTTPResponseResource responseHandlerWithRequestHeader:requestHeader];
+    }
+    
+    NSLog(@"！！！Not support Method %@",requestHeader.method);
     return nil;
 }
 @end

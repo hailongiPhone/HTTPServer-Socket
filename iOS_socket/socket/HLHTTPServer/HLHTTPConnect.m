@@ -10,6 +10,7 @@
 #import "HLPackageRead.h"
 #import "HLHTTPRequestHandler.h"
 #import "HLHTTPResponseHandler.h"
+#import "HLHTTPResponse.h"
 
 
 
@@ -60,7 +61,7 @@
             break;
         case HLRequestPackageTagBody:
         {
-            NSLog(@"Body == %@",[NSString stringWithUTF8String:[data bytes]]);
+            NSLog(@"Body string == %@,length=%ld",[NSString stringWithUTF8String:[data bytes]],[data length]);
             [self.requestHandler onReciveBodyData:data];
             
             [self tryToReplyToHTTPRequest];
@@ -73,7 +74,10 @@
 
 - (void)writeDonePackageTag:(NSInteger)tag;
 {
-    
+    if (tag == HLResponsePackageTagBody) {
+        HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
+        [self.socketConnect readPackage:packageHeader];
+    }
 }
 
 - (void)tryToReplyToHTTPRequest

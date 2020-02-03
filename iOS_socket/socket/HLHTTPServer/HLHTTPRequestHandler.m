@@ -240,7 +240,7 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
     NSString * path = [documentsDirectory stringByAppendingPathComponent:header.fileName];
     
     BOOL written = [body writeToFile:path options:NSDataWritingAtomic error:nil];
-    NSLog(@"written");
+    NSLog(@"written = %d",written);
     
     self.waitingBodyData = NO;
 }

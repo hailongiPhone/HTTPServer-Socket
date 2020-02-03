@@ -91,6 +91,9 @@
     //如果保存在preBuffer中
     if (![read isKindOfClass:[HLPackageRead class]]) {
         read = [self firstPackageReader];
+        if (!read) {
+            return nil;
+        }
         [self packageReader:read readFromPreBuffer:self.preBuffer];
     }
     
@@ -111,6 +114,10 @@
 //读取的过程，首先确定长度，然后分配内存，在拷贝数据
 - (void)packageReader:(HLPackageRead *)reader readFromPreBuffer:(GCDAsyncSocketPreBuffer *)preBuffer;
 {
+    if (!reader) {
+        return;
+    }
+    
     if ([preBuffer availableBytes] < 1) {
         return;
     }
