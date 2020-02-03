@@ -21,8 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, strong) NSString *path;
 @property(nonatomic, strong) NSString *host;
+
 @property(nonatomic, assign) u_int64_t contentLength;
 @property(nonatomic, strong) NSDictionary *queryString;
+
+@property(nonatomic, strong) NSString *boundary;
 - (BOOL)hasBody;
 - (NSString *)fileName;
 - (BOOL)hasRangeHead;

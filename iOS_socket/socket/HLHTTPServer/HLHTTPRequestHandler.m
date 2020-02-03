@@ -126,7 +126,40 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
     
     header.headDic = head;
     
+    //上传文件的处理
+    [self updateUploadFileHeaderInfo:header];
+    
     [[self lazyRequest] setHeader:header];
+}
+
+//更新上传文件的信息，body的分割符号
+- (void)updateUploadFileHeaderInfo:(HLHTTPHeaderRequest *)headerInfo;
+{
+    
+    if(![headerInfo.method isEqualToString:@"POST"]){
+        return;
+    }
+    
+    NSString * contentType = [headerInfo.headDic valueForKey:@"Content-Type"];
+    NSArray * array = [contentType componentsSeparatedByString:@";"];
+    NSString * type = array[0];
+    //上传文件必须是multipart/form-data，并且有额外参数boundary
+    //Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryWcBrx73QHWvIBGTK
+//    Content-Length: 35840
+    if ([array count] <= 1 || ![type isEqualToString:@"multipart/form-data"]) {
+        return;
+    }
+    
+    //找boundary
+    NSInteger count = [array count];
+    for (NSInteger i = 1; i < count; i++) {
+        NSString * param = [array objectAtIndex:i];
+        NSArray * array = [param componentsSeparatedByString:@"="];
+        if ([array[0] isEqualToString:@"boundary"]) {
+            [headerInfo setBoundary:array[0]];
+            break;
+        }
+    }
 }
 
 - (HLHTTPRequest *)lazyRequest;
