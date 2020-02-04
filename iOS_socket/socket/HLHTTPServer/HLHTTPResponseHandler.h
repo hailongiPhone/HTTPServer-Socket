@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HLPackageWriter *)writerPackageForHeaderInfo;
 - (HLPackageWriter *)writerPackageBody;
+
+- (HLPackageWriter *)writerPackage;
 @end
 
 NS_ASSUME_NONNULL_END

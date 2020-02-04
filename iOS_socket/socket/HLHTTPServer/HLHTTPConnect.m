@@ -49,7 +49,7 @@
     switch (tag) {
         case HLRequestPackageTagHeader:
         {
-            NSLog(@"Header == %@",[NSString stringWithUTF8String:[data bytes]]);
+            NSLog(@"Header == %@,length=%ld",[NSString stringWithUTF8String:[data bytes]],[data length]);
             [self.requestHandler onReciveHeadData:data];
             HLPackageRead * packageBody = [self.requestHandler readPackageBody];
             if (packageBody) {
@@ -74,10 +74,15 @@
 
 - (void)writeDonePackageTag:(NSInteger)tag;
 {
+    NSLog(@"writeDonePackageTag %ld",tag);
     if (tag == HLResponsePackageTagBody) {
-        HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
-        [self.socketConnect readPackage:packageHeader];
+//        HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
+//        [self.socketConnect readPackage:packageHeader];
+        [self.socketConnect disconnect];
     }
+//    else{
+//        [self.socketConnect disconnect];
+//    }
 }
 
 - (void)tryToReplyToHTTPRequest
@@ -88,6 +93,7 @@
     
     //常见handler
     self.responseHandler = [HLHTTPResponseHandler responseHandlerWithRequestHeader:[self.requestHandler requestHeader]];
+//    [self.socketConnect writePackage:[self.responseHandler writerPackage]];
     [self.socketConnect writePackage:[self.responseHandler writerPackageForHeaderInfo]];
     HLPackageWriter * body = [self.responseHandler writerPackageBody];
     if (body) {

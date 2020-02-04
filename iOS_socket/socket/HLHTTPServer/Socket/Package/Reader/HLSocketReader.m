@@ -91,22 +91,26 @@
     //如果保存在preBuffer中
     if (![read isKindOfClass:[HLPackageRead class]]) {
         read = [self firstPackageReader];
-
+        
         if (!read) {
+            NSLog(@"NO Package Reader");
             return nil;
         }
+        
         [self packageReader:read readFromPreBuffer:self.preBuffer];
     }
     
     BOOL hasDone = [read hasDone];
     
     if (hasDone) {
+        NSLog(@"Package Reader Done = %@",read);
         if (read == self.currentBuffer) {
             self.currentBuffer = nil;
         }else{
             [self.packageReaders removeObject:read];
         }
     }else{
+        NSLog(@"Package Reader NOT Done = %@",read);
         read = nil;
     }
     return  read;

@@ -21,29 +21,21 @@
     
     self.requestHeader = requestHeader;
     NSData * body = [self body];
-    self.responseHeader = [self headerForRequestHeader:requestHeader];
+    self.responseHeader = [HLHTTPHeaderResponse headerForRequestHeader:requestHeader];
     self.responseHeader.contentLength = [body length];
     self.body = body;
 }
 
-- (HLHTTPHeaderResponse *)headerForRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
+- (HLPackageWriter *)writerPackage;
 {
-    NSDate *date = [NSDate date];
-    NSString *dataStr = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterFullStyle];
-    NSDictionary *dic = @{
-                          @"Date"   : dataStr,
-                          @"Server" : @"HLHTTPServer",
-                          @"Accept-Ranges": @"bytes"
-                          };
+    NSData * header = [self.responseHeader achiveData];
+    NSMutableData * d = [NSMutableData new];
+    [d appendData:header];
+    if(self.body){
+        [d appendData:self.body];
+    }
     
-    HLHTTPHeaderResponse * header = [HLHTTPHeaderResponse new];
-    header.lineMap = dic.mutableCopy;
-    header.protocol = requestHeader.protocol;
-    header.version = requestHeader.version;
-    header.stateCode = [requestHeader hasRangeHead] ? 206 : 200;
-    header.stateDesc = @"OK";
-    
-    return header;
+    return [HLPackageWriter packageWithData:d tag:HLResponsePackageTagHeader];
 }
 
 - (HLPackageWriter *)writerPackageForHeaderInfo;

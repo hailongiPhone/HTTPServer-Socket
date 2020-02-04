@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, HLResponsePackageTag) {
 @property (nonatomic,strong) NSData * body;
 - (HLPackageWriter *)writerPackageForHeaderInfo;
 - (HLPackageWriter *)writerPackageBody;
+- (HLPackageWriter *)writerPackage;
 
 
 + (HLHTTPResponse *)responseHandlerWithRequestHeader:(HLHTTPHeaderRequest *)requestHeader;

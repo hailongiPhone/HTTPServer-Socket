@@ -20,6 +20,11 @@
     return nil;
 }
 
+- (HLPackageWriter *)writerPackage;
+{
+    return nil;
+}
+
 + (HLHTTPResponse *)responseHandlerWithRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
 {
     if ([requestHeader.method isEqualToString:@"GET"]) {

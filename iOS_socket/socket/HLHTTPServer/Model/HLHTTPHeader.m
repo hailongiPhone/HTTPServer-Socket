@@ -8,7 +8,26 @@
 
 #import "HLHTTPHeader.h"
 
+@interface HLHeaderLine ()
+@property(nonatomic,assign)BOOL hasParse;
+@end
+
+@interface HLHeaderLine (Parser)
+// lineKey: lineValue
+- (void)parserKeyValueFromLineString:(NSString *)linestring;
+//默认";"作为分隔符，
+// lineKey: lineValue ; 参数key=参数value；参数key1=参数value1;
+- (void)parserParametersFromValueString:(NSString *)valueString;
+@end
+
 @implementation HLHeaderLine
+
++ (instancetype)lineWithLineString:(NSString * )lineString;
+{
+    HLHeaderLine * tmp = [HLHeaderLine new];
+    [tmp parserKeyValueFromLineString:lineString];
+    return tmp;
+}
 
 + (instancetype)lineWithKey:(NSString *)key
                       value:(NSString *)value
@@ -21,45 +40,39 @@
     return tmp;
 }
 
+- (NSDictionary *)parameters;
+{
+    if (!self.hasParse) {
+        [self parserParametersFromValueString:self.orignalValue];
+    }
+    return self->_parameters;
+}
+
 @end
 
 @implementation HLHeaderLine (Parser)
 
-+ (NSArray *)itemsFromLineString:(NSString *)linestring separator:(NSString *)separator;
-{
-    return [linestring componentsSeparatedByString:separator];
-}
-
-+ (HLHeaderLine*)headerLineFromLineString:(NSString *)linestring
+- (void)parserKeyValueFromLineString:(NSString *)linestring
 {
     NSArray *headItems =  [linestring componentsSeparatedByString:@": "];
     if(headItems.count != 2) {
-        return nil;
+        return;
     }
-    HLHeaderLine * head = [HLHeaderLine new];
-    head.key = [headItems[0] stringByRemovingPercentEncoding];
-    head.value = [headItems[1] stringByRemovingPercentEncoding];
-    
-    return head;
+    self.key = [headItems[0] stringByRemovingPercentEncoding];
+    self.orignalValue = [headItems[1] stringByRemovingPercentEncoding];
+    self.value = [headItems[1] stringByRemovingPercentEncoding];
 }
 
 //默认";"作为分隔符，
 // lineKey: lineValue ; 参数key=参数value；参数key1=参数value1;
-+ (HLHeaderLine*)headerLineWithParametersFromLineString:(NSString *)linestring;
+- (void)parserParametersFromValueString:(NSString *)valueString;
 {
-    NSArray *headItems =  [linestring componentsSeparatedByString:@": "];
-    if(headItems.count != 2) {
-        return nil;
-    }
-    HLHeaderLine * head = [HLHeaderLine new];
-    head.key = [headItems[0] stringByRemovingPercentEncoding];
-    NSString * valueString = [headItems[1] stringByRemovingPercentEncoding];
     NSArray * items;
     if (valueString) {
         items = [valueString componentsSeparatedByString:@";"];
     }
     if (items) {
-        head.value = [items firstObject];
+        self.value = [items firstObject];
         
         NSInteger count = [items count];
         
@@ -74,8 +87,7 @@
         }
     }
     
-
-    return head;
+    self.hasParse = YES;
 }
 
 @end
@@ -191,4 +203,24 @@
     [self.lineMap setObject:value forKey:key];
 }
 
+
++ (HLHTTPHeaderResponse *)headerForRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
+{
+    NSDate *date = [NSDate date];
+    NSString *dataStr = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterFullStyle];
+    NSDictionary *dic = @{
+                          @"Date"   : dataStr,
+                          @"Server" : @"HLHTTPServer",
+                          @"Accept-Ranges": @"bytes"
+                          };
+    
+    HLHTTPHeaderResponse * header = [HLHTTPHeaderResponse new];
+    header.lineMap = dic.mutableCopy;
+    header.protocol = requestHeader.protocol;
+    header.version = requestHeader.version;
+    header.stateCode = [requestHeader hasRangeHead] ? 206 : 200;
+    header.stateDesc = @"OK";
+    
+    return header;
+}
 @end

@@ -48,6 +48,7 @@
 {
     self.delegate = delegate;
     self.delegateQueue = callbackQueue;
+    [self markQueue];
 }
 
 #pragma mark - Socket
@@ -186,10 +187,42 @@
 
 - (void)runBlockOnDelegateQueue:(void (^)(void))block;
 {
-    dispatch_sync(self.delegateQueue, ^{
+    [self asyncRunOnQueue:^{
         block();
-    });
-    
-    
+    }];
+//    dispatch_sync(self.delegateQueue, ^{
+//        block();
+//    });
 }
+
+#pragma mark -
+static int kQueueKey;
+- (void)markQueue;
+{
+    void *nonNullUnusedPointer = (__bridge void *)self;
+    dispatch_queue_set_specific(self.delegateQueue,&kQueueKey,nonNullUnusedPointer,NULL);
+}
+
+- (void) syncRunOnQueue:(void(^)(void))block;
+{
+    if(dispatch_get_specific(&kQueueKey)){
+        block();
+    }else{
+        dispatch_sync(self.delegateQueue, ^{
+            block();
+        });
+    }
+}
+
+- (void) asyncRunOnQueue:(void(^)(void))block;
+{
+    if(dispatch_get_specific(&kQueueKey)){
+        block();
+    }else{
+        dispatch_async(self.delegateQueue, ^{
+            block();
+        });
+    }
+}
+
 @end

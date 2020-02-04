@@ -8,6 +8,7 @@
 
 #import "HLHeaderParser.h"
 
+
 @implementation HLHTTPHeaderRequest (Parser)
 - (void)parseFromAllData:(NSData *)data;
 {
@@ -21,7 +22,7 @@
         if(line.length == 0) return ;
         if(idx == 0){
              //第一行
-            NSArray * first = [HLHeaderLine itemsFromLineString:line separator:@" "];
+            NSArray * first = [line componentsSeparatedByString:@" "];
             if(![self loadFromFirstLineItem:first]){
                 NSLog(@"ERROR!!! header first Line value error.");
                 *stop = YES;
@@ -29,7 +30,7 @@
                 return;
             }
         }else{
-            HLHeaderLine * lineItem = [HLHeaderLine headerLineWithParametersFromLineString:line];
+            HLHeaderLine * lineItem = [HLHeaderLine lineWithLineString:line];
             [self.lineMap setValue:lineItem forKey:lineItem.key];
         }
     }];
@@ -68,10 +69,10 @@
     }
     
     if (!self.method) {
-        NSArray * items = [HLHeaderLine itemsFromLineString:lineString separator:@" "];
+        NSArray * items = [lineString componentsSeparatedByString:@" "];
         [self loadFromFirstLineItem:items];
     }else{
-        HLHeaderLine * lineItem = [HLHeaderLine headerLineWithParametersFromLineString:lineString];
+        HLHeaderLine * lineItem = [HLHeaderLine lineWithLineString:lineString];
         [self.lineMap setValue:lineItem forKey:lineItem.key];
     }
 }

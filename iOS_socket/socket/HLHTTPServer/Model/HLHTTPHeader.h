@@ -24,23 +24,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HLHeaderLine : NSObject
 @property(nonatomic,strong)NSString * key;
 @property(nonatomic,strong)NSString * orignalValue;
+
 @property(nonatomic,strong)NSString * value;
 @property(nonatomic,strong)NSDictionary * parameters;
+
++ (instancetype)lineWithLineString:(NSString * )lineString;
 
 + (instancetype)lineWithKey:(NSString *)key
                       value:(NSString *)value
                  parameters:(NSDictionary *)parameters;
-@end
-
-@interface HLHeaderLine (Parser)
-// lineKey: lineValue
-+ (NSArray *)itemsFromLineString:(NSString *)linestring separator:(NSString *)separator;
-
-// lineKey: lineValue
-+ (HLHeaderLine*)headerLineFromLineString:(NSString *)linestring;
-//默认";"作为分隔符，
-// lineKey: lineValue ; 参数key=参数value；参数key1=参数value1;
-+ (HLHeaderLine*)headerLineWithParametersFromLineString:(NSString *)linestring;
 @end
 
 
@@ -96,6 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSMutableDictionary *lineMap;
 - (void)setValue:(NSString *)value ForKey:(NSString *)key;
 - (NSData *)achiveData;
+
+
++ (HLHTTPHeaderResponse *)headerForRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
 @end
 
 NS_ASSUME_NONNULL_END

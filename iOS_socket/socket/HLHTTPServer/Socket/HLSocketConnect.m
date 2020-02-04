@@ -239,11 +239,16 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
     [self asyncRunOnQueue:^{
         HLSocketReader * reader = [self lazySocketReader];
         [reader addPackageReader:package];
+        
+        [self tryPackageReadDoneCallback];
     }];
 }
 
 - (void) writePackage:(HLPackageWriter *)package;
 {
+    if (!package) {
+        return;
+    }
     [self asyncRunOnQueue:^{
         HLSocketWriter * writer = [self lazySockerWrier];
         [writer addPackageWriter:package];

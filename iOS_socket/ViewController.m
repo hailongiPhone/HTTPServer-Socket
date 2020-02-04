@@ -42,7 +42,7 @@
 - (IBAction)onTapButton:(id)sender {
     
 //    [self.bs setupClinetTCP];
-    [self requestWithCFNetwork];
+    [self getRequestWithCFNetwork];
 //    [[self class] stopCFStreamThreadIfNeeded];
     
 //    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"da bao" message:@"Aa" preferredStyle:UIAlertControllerStyleAlert];
@@ -136,7 +136,62 @@ static NSThread *cfstreamThread;  // Used for CFStreams
 
 //#define SERVER_PORT 55667
 //#define SERVER_ADD  "127.0.0.1"
-- (void)requestWithCFNetwork
+- (void)getRequestWithCFNetwork
+{
+//创建请求
+    CFStringRef url = CFSTR("http://127.0.0.1:55667");
+    CFURLRef myURL = CFURLCreateWithString(kCFAllocatorDefault, url, NULL);
+    
+    CFStringRef requestMethod = CFSTR("GET");
+    CFHTTPMessageRef myRequest =
+    CFHTTPMessageCreateRequest(kCFAllocatorDefault, requestMethod, myURL,
+                               kCFHTTPVersion1_1);
+// 设置header
+CFHTTPMessageSetHeaderFieldValue(myRequest, CFSTR("Content-Type"), CFSTR("application/x-www-form-urlencoded; charset=utf-8"));
+
+//创建流并开启
+    CFReadStreamRef requestStream = CFReadStreamCreateForHTTPRequest(NULL, myRequest);
+    CFReadStreamOpen(requestStream);
+    //接收响应
+    NSMutableData *responseBytes = [NSMutableData data];
+    CFIndex numBytesRead = 0;
+    
+    NSDate * lastReadDate;
+    do {
+        UInt8 buf[1024];
+        
+        BOOL hasValue = CFReadStreamHasBytesAvailable(requestStream);
+        if (!hasValue) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+            continue;
+        }
+        numBytesRead = CFReadStreamRead(requestStream, buf, sizeof(buf));
+        
+        if (numBytesRead > 0) {
+            [responseBytes appendBytes:buf length:numBytesRead];
+        }
+        lastReadDate = [NSDate date];
+//    } while (!lastReadDate || [[NSDate date] timeIntervalSinceDate:lastReadDate] < 100);
+        } while (numBytesRead == 0);
+    
+    CFHTTPMessageRef response = (CFHTTPMessageRef) CFReadStreamCopyProperty(requestStream, kCFStreamPropertyHTTPResponseHeader);
+    CFHTTPMessageSetBody(response, (__bridge CFDataRef)responseBytes);
+    CFReadStreamClose(requestStream);
+    CFRelease(requestStream);
+    CFAutorelease(response);
+
+//转换为JSON
+    CFIndex statusCode;
+    statusCode = CFHTTPMessageGetResponseStatusCode(response);
+    CFDictionaryRef header = CFHTTPMessageCopyAllHeaderFields(response);
+    CFDataRef responseDataRef = CFHTTPMessageCopyBody(response);
+    NSData *responseData = (__bridge NSData *)responseDataRef;
+//    NSMutableDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+//    NSLog(@"responseBody: %@", jsonInfo);
+    NSLog(@"header: %@",(__bridge NSDictionary *)header);
+    NSLog(@"responseBody: %@", [NSString stringWithCString:[responseData bytes] encoding:NSUTF8StringEncoding]);
+}
+- (void)postRequestWithCFNetwork
 {
 //创建请求
     CFStringRef url = CFSTR("http://127.0.0.1:55667");
@@ -157,9 +212,15 @@ CFHTTPMessageSetHeaderFieldValue(myRequest, CFSTR("Content-Type"), CFSTR("applic
     CFReadStreamOpen(requestStream);
     //接收响应
     NSMutableData *responseBytes = [NSMutableData data];
+    
     CFIndex numBytesRead = 0;
     do {
         UInt8 buf[1024];
+        BOOL hasValue = CFReadStreamHasBytesAvailable(requestStream);
+        if (!hasValue) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+            continue;
+        }
         numBytesRead = CFReadStreamRead(requestStream, buf, sizeof(buf));
         
         if (numBytesRead > 0) {
