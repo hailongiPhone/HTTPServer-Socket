@@ -37,7 +37,7 @@
                           };
     
     HLHTTPHeaderResponse * header = [HLHTTPHeaderResponse new];
-    header.headDic = dic.mutableCopy;
+    header.lineMap = dic.mutableCopy;
     header.protocol = requestHeader.protocol;
     header.version = requestHeader.version;
     header.stateCode = [requestHeader hasRangeHead] ? 206 : 200;
@@ -48,7 +48,7 @@
 
 - (HLPackageWriter *)writerPackageForHeaderInfo;
 {
-    return [HLPackageWriter packageWithData:[self.responseHeader dataOfHeader] tag:HLResponsePackageTagHeader];
+    return [HLPackageWriter packageWithData:[self.responseHeader achiveData] tag:HLResponsePackageTagHeader];
 }
 - (HLPackageWriter *)writerPackageBody;
 {

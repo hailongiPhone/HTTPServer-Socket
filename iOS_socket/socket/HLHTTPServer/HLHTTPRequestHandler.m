@@ -34,6 +34,7 @@
 - (BOOL)onReciveHeadData:(NSData *)data;
 {
     [self parseHeaderInfo:data];
+//    [self parseRequestWithCFNetwork:data];
     self.waitingBodyData = [self hasBody];
     return YES;
 }
@@ -83,84 +84,87 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
 
 - (void)parseHeaderInfo:(NSData *)data;
 {
-    NSString *headStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSArray<NSString *> *headArray = [headStr componentsSeparatedByString:@"\r\n"];
-    
     HLHTTPHeaderRequest * header = [HLHTTPHeaderRequest new];
-    NSMutableDictionary *head = @{}.mutableCopy;
+    [header parseFromAllData:data];
     
-    __block BOOL res = YES;
-    [headArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if(obj.length == 0)return ;
-        if(idx == 0){
-            NSArray *lineItems =  [obj componentsSeparatedByString:@" "];
-            if(lineItems.count != 3) {
-                *stop = YES;
-                res = NO;
-                return;
-            }
-            header.method = lineItems[0];
-            header.path = [lineItems[1] stringByRemovingPercentEncoding];
-            NSArray *array =  [lineItems[2] componentsSeparatedByString:@"/"];
-            if(array.count != 2) {
-                *stop = YES;
-                res = NO;
-            }
-            header.protocol = array[0];
-            header.version = array[1];
-            return;
-        }
-        
-        NSArray *headItems =  [obj componentsSeparatedByString:@": "];
-        if(headItems.count != 2) return;
-        [head setObject:[headItems[1] stringByRemovingPercentEncoding]
-                 forKey:headItems[0]];
-    }];
-    
-    header.host = head[@"Host"];
-    
-    NSString * length = [head valueForKey:@"Content-Length"];
-    if (length) {
-        header.contentLength = strtoull([length UTF8String], NULL, 0);
-    }
-    
-    header.headDic = head;
+//    NSString *headStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//    NSArray<NSString *> *headArray = [headStr componentsSeparatedByString:@"\r\n"];
+//
+//    HLHTTPHeaderRequest * header = [HLHTTPHeaderRequest new];
+//    NSMutableDictionary *head = @{}.mutableCopy;
+//
+//    __block BOOL res = YES;
+//    [headArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        if(obj.length == 0)return ;
+//        if(idx == 0){
+//            NSArray *lineItems =  [obj componentsSeparatedByString:@" "];
+//            if(lineItems.count != 3) {
+//                *stop = YES;
+//                res = NO;
+//                return;
+//            }
+//            header.method = lineItems[0];
+//            header.path = [lineItems[1] stringByRemovingPercentEncoding];
+//            NSArray *array =  [lineItems[2] componentsSeparatedByString:@"/"];
+//            if(array.count != 2) {
+//                *stop = YES;
+//                res = NO;
+//            }
+//            header.protocol = array[0];
+//            header.version = array[1];
+//            return;
+//        }
+//
+//        NSArray *headItems =  [obj componentsSeparatedByString:@": "];
+//        if(headItems.count != 2) return;
+//        [head setObject:[headItems[1] stringByRemovingPercentEncoding]
+//                 forKey:headItems[0]];
+//    }];
+//
+//    header.host = head[@"Host"];
+//
+//    NSString * length = [head valueForKey:@"Content-Length"];
+//    if (length) {
+//        header.contentLength = strtoull([length UTF8String], NULL, 0);
+//    }
+//
+//    header.headDic = head;
     
     //上传文件的处理
-    [self updateUploadFileHeaderInfo:header];
+//    [self updateUploadFileHeaderInfo:header];
     
     [[self lazyRequest] setHeader:header];
 }
 
 //更新上传文件的信息，body的分割符号
-- (void)updateUploadFileHeaderInfo:(HLHTTPHeaderRequest *)headerInfo;
-{
-    
-    if(![headerInfo.method isEqualToString:@"POST"]){
-        return;
-    }
-    
-    NSString * contentType = [headerInfo.headDic valueForKey:@"Content-Type"];
-    NSArray * array = [contentType componentsSeparatedByString:@";"];
-    NSString * type = array[0];
-    //上传文件必须是multipart/form-data，并且有额外参数boundary
-    //Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryWcBrx73QHWvIBGTK
-//    Content-Length: 35840
-    if ([array count] <= 1 || ![type isEqualToString:@"multipart/form-data"]) {
-        return;
-    }
-    
-    //找boundary
-    NSInteger count = [array count];
-    for (NSInteger i = 1; i < count; i++) {
-        NSString * param = [array objectAtIndex:i];
-        NSArray * array = [param componentsSeparatedByString:@"="];
-        if ([array[0] isEqualToString:@"boundary"]) {
-            [headerInfo setBoundary:array[0]];
-            break;
-        }
-    }
-}
+//- (void)updateUploadFileHeaderInfo:(HLHTTPHeaderRequest *)headerInfo;
+//{
+//
+//    if(![headerInfo.method isEqualToString:@"POST"]){
+//        return;
+//    }
+//
+//    NSString * contentType = [headerInfo.headDic valueForKey:@"Content-Type"];
+//    NSArray * array = [contentType componentsSeparatedByString:@";"];
+//    NSString * type = array[0];
+//    //上传文件必须是multipart/form-data，并且有额外参数boundary
+//    //Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryWcBrx73QHWvIBGTK
+////    Content-Length: 35840
+//    if ([array count] <= 1 || ![type isEqualToString:@"multipart/form-data"]) {
+//        return;
+//    }
+//
+//    //找boundary
+//    NSInteger count = [array count];
+//    for (NSInteger i = 1; i < count; i++) {
+//        NSString * param = [array objectAtIndex:i];
+//        NSArray * array = [param componentsSeparatedByString:@"="];
+//        if ([array[0] isEqualToString:@"boundary"]) {
+//            [headerInfo setBoundary:array[0]];
+//            break;
+//        }
+//    }
+//}
 
 - (HLHTTPRequest *)lazyRequest;
 {
@@ -191,13 +195,8 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
     header.method = [self method];
     header.path = [[self url] absoluteString];
     header.version = [self version];
-    
-    header.host = [self headerField:@"Host"];
-    NSString * length = [self headerField:@"Content-Length"];
-    if (length) {
-        header.contentLength = strtoull([length UTF8String], NULL, 0);
-    }
-    header.headDic = [self allHeaderFields];
+
+    header.lineMap = [[self allHeaderFields] mutableCopy];
     
     [[self lazyRequest] setHeader:header];
 }
@@ -277,4 +276,5 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
     
     self.waitingBodyData = NO;
 }
+
 @end

@@ -25,6 +25,10 @@
 		D9AF6BBB23E74FC4007DCE98 /* HLHTTPResponsePOST.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AF6BBA23E74FC4007DCE98 /* HLHTTPResponsePOST.m */; };
 		D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C745FD23E2A3B60080851E /* HLPackageRead.m */; };
 		D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */ = {isa = PBXBuildFile; fileRef = D9C7460023E2B59E0080851E /* HLSocketReader.m */; };
+		D9E0FA5623E8568400F5DBEF /* HLMultipartBodyParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E0FA5523E8568400F5DBEF /* HLMultipartBodyParser.m */; };
+		D9E0FA5A23E856AA00F5DBEF /* HLBodyPart.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E0FA5923E856AA00F5DBEF /* HLBodyPart.m */; };
+		D9E0FA5D23E859C200F5DBEF /* HLBody.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E0FA5C23E859C200F5DBEF /* HLBody.m */; };
+		D9E0FA6023E85C5A00F5DBEF /* HLHeaderParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E0FA5F23E85C5A00F5DBEF /* HLHeaderParser.m */; };
 		D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B323CC45110051045E /* AppDelegate.m */; };
 		D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B623CC45110051045E /* SceneDelegate.m */; };
 		D9F7A6BA23CC45110051045E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6B923CC45110051045E /* ViewController.m */; };
@@ -75,6 +79,14 @@
 		D9C745FF23E2B59E0080851E /* HLSocketReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLSocketReader.h; sourceTree = "<group>"; };
 		D9C7460023E2B59E0080851E /* HLSocketReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLSocketReader.m; sourceTree = "<group>"; };
 		D9C7460623E2BC6D0080851E /* HLReadBufferProtocal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLReadBufferProtocal.h; sourceTree = "<group>"; };
+		D9E0FA5423E8568400F5DBEF /* HLMultipartBodyParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLMultipartBodyParser.h; sourceTree = "<group>"; };
+		D9E0FA5523E8568400F5DBEF /* HLMultipartBodyParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLMultipartBodyParser.m; sourceTree = "<group>"; };
+		D9E0FA5823E856AA00F5DBEF /* HLBodyPart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLBodyPart.h; sourceTree = "<group>"; };
+		D9E0FA5923E856AA00F5DBEF /* HLBodyPart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLBodyPart.m; sourceTree = "<group>"; };
+		D9E0FA5B23E859C200F5DBEF /* HLBody.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLBody.h; sourceTree = "<group>"; };
+		D9E0FA5C23E859C200F5DBEF /* HLBody.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLBody.m; sourceTree = "<group>"; };
+		D9E0FA5E23E85C5A00F5DBEF /* HLHeaderParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLHeaderParser.h; sourceTree = "<group>"; };
+		D9E0FA5F23E85C5A00F5DBEF /* HLHeaderParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLHeaderParser.m; sourceTree = "<group>"; };
 		D9F7A6AF23CC45110051045E /* iOS_socket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_socket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F7A6B223CC45110051045E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F7A6B323CC45110051045E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -119,6 +131,7 @@
 				D9AF6BB423E74724007DCE98 /* HLHTTPResponseHandler.m */,
 				D9AF6BB023E6C0DE007DCE98 /* HLHTTPRequestHandler.h */,
 				D9AF6BB123E6C0DE007DCE98 /* HLHTTPRequestHandler.m */,
+				D9E0FA5723E8568900F5DBEF /* Parser */,
 				D9969B4623E5B470000B0FDB /* Socket */,
 			);
 			path = HLHTTPServer;
@@ -164,6 +177,8 @@
 			children = (
 				D9969B4C23E5BA1F000B0FDB /* HLHTTPHeader.h */,
 				D9969B4D23E5BA1F000B0FDB /* HLHTTPHeader.m */,
+				D9E0FA5E23E85C5A00F5DBEF /* HLHeaderParser.h */,
+				D9E0FA5F23E85C5A00F5DBEF /* HLHeaderParser.m */,
 				D93B041823D57B7700977A75 /* HLHTTPRequest.h */,
 				D93B041923D57B7700977A75 /* HLHTTPRequest.m */,
 				D93B041B23D57B9500977A75 /* HLHTTPResponse.h */,
@@ -187,6 +202,19 @@
 				D9A12C3823D68E1F0072BCA3 /* HLPreBuffer.m */,
 			);
 			path = Reader;
+			sourceTree = "<group>";
+		};
+		D9E0FA5723E8568900F5DBEF /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				D9E0FA5423E8568400F5DBEF /* HLMultipartBodyParser.h */,
+				D9E0FA5523E8568400F5DBEF /* HLMultipartBodyParser.m */,
+				D9E0FA5823E856AA00F5DBEF /* HLBodyPart.h */,
+				D9E0FA5923E856AA00F5DBEF /* HLBodyPart.m */,
+				D9E0FA5B23E859C200F5DBEF /* HLBody.h */,
+				D9E0FA5C23E859C200F5DBEF /* HLBody.m */,
+			);
+			path = Parser;
 			sourceTree = "<group>";
 		};
 		D9F7A6A623CC45110051045E = {
@@ -319,15 +347,19 @@
 				D9A12C3923D68E1F0072BCA3 /* HLPreBuffer.m in Sources */,
 				D9AF6BB223E6C0DE007DCE98 /* HLHTTPRequestHandler.m in Sources */,
 				D9F7A6BA23CC45110051045E /* ViewController.m in Sources */,
+				D9E0FA5D23E859C200F5DBEF /* HLBody.m in Sources */,
 				D9AF6BB523E74724007DCE98 /* HLHTTPResponseHandler.m in Sources */,
 				D9AF6BB823E74F9E007DCE98 /* HLHTTPResponseResource.m in Sources */,
 				D9F7A6B423CC45110051045E /* AppDelegate.m in Sources */,
+				D9E0FA6023E85C5A00F5DBEF /* HLHeaderParser.m in Sources */,
 				D9AF6BBB23E74FC4007DCE98 /* HLHTTPResponsePOST.m in Sources */,
 				D9C745FE23E2A3B60080851E /* HLPackageRead.m in Sources */,
 				D9F7A6C523CC45130051045E /* main.m in Sources */,
 				D9C7460123E2B59E0080851E /* HLSocketReader.m in Sources */,
+				D9E0FA5A23E856AA00F5DBEF /* HLBodyPart.m in Sources */,
 				D9F7A6B723CC45110051045E /* SceneDelegate.m in Sources */,
 				D9969B4123E5906E000B0FDB /* HLPackageWriter.m in Sources */,
+				D9E0FA5623E8568400F5DBEF /* HLMultipartBodyParser.m in Sources */,
 				D9969B4E23E5BA1F000B0FDB /* HLHTTPHeader.m in Sources */,
 				D9969B4A23E5B8E3000B0FDB /* HLHTTPServerConfig.m in Sources */,
 				D93B041D23D57B9500977A75 /* HLHTTPResponse.m in Sources */,

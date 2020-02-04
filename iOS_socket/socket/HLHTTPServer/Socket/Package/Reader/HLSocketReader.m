@@ -91,6 +91,7 @@
     //如果保存在preBuffer中
     if (![read isKindOfClass:[HLPackageRead class]]) {
         read = [self firstPackageReader];
+
         if (!read) {
             return nil;
         }
