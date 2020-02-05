@@ -34,13 +34,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HLSocketReader : NSObject
 
 - (void)addPackageReader:(HLPackageRead *)reader;
+- (NSInteger)packageCount;
+- (NSInteger)readPackageTimeout;
+
 
 - (NSUInteger)readLengthForEstimatedBytesAvailable:(NSUInteger)estimatedBytesAvailable
                                  readBufferPointer:(uint8_t *_Nullable*_Nullable)readBufferPointer;
 - (void)didRead:(size_t)bytesWritten;
 
 - (HLPackageRead *)extractDoneRead;
-
 @end
 
 NS_ASSUME_NONNULL_END

@@ -36,6 +36,8 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 @property (nonatomic,strong) dispatch_source_t readSoure;
 @property (nonatomic,strong) dispatch_source_t writeSoure;
 
+@property (nonatomic,strong) dispatch_source_t readPackageTimer;    //读数据包的timer
+
 @property(nonatomic,strong) HLSocketReader * reader;
 @property(nonatomic,strong) HLSocketWriter * writer;
 @property(nonatomic,assign) SocketConnectState readState;
@@ -167,6 +169,8 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
                    readPackageData:[readerDone bufferData]
                         packageTag:[readerDone tag]];
         }
+        
+        [self tryToStartReadTimer];
     }
 }
 
@@ -234,19 +238,25 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 }
 
 #pragma mark - Interface
-- (void) readPackage:(HLPackageRead *)package;
+- (void) readPackage:(HLPackageRead *)package timeout:(NSInteger)timeout;
 {
+    if (!package) {
+        return;
+    }
+    package.readPackageTimeout = timeout;
     [self asyncRunOnQueue:^{
         HLSocketReader * reader = [self lazySocketReader];
         [reader addPackageReader:package];
         
+        
+        [self tryToStartReadTimer];
         [self tryPackageReadDoneCallback];
     }];
 }
 
 - (void) writePackage:(HLPackageWriter *)package;
 {
-    if (!package) {
+    if (!package || !self.writeSoure) {
         return;
     }
     [self asyncRunOnQueue:^{
@@ -345,5 +355,53 @@ callbackQueue:(dispatch_queue_t)callbackQueue;
 - (id)copyWithZone:(NSZone *)zone{
     
     return self;
+}
+
+#pragma mark - Read Timeout
+// 启动timer的时机 ：1 添加readpackage的时候，2，读取完一个package的时候，
+// 时间到了执行disconnect方法
+- (void)tryToStartReadTimer;
+{
+    if ([self.reader packageCount]<1) {
+        return;
+    }
+    
+    if (self.readPackageTimer) {
+        return;
+    }
+    
+    [self setupReadTimerWithTimeout:[self.reader readPackageTimeout]];
+}
+- (void)setupReadTimerWithTimeout:(NSTimeInterval)timeout
+{
+    assert(!self.readPackageTimer);
+    if (timeout >= 0.0)
+    {
+        
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        self.readPackageTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,  queue);
+        
+        __weak typeof(self) weakSelf = self;
+        
+        dispatch_source_set_event_handler(self.readPackageTimer, ^{ @autoreleasepool {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf == nil) return;
+            [strongSelf doReadTimeout];
+        }});
+        
+        
+        dispatch_time_t tt = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeout * NSEC_PER_SEC));
+        
+        dispatch_source_set_timer(self.readPackageTimer, tt, DISPATCH_TIME_FOREVER, 0);
+        dispatch_resume(self.readPackageTimer);
+    }
+}
+
+- (void)doReadTimeout;
+{
+    dispatch_source_cancel(self.readPackageTimer);
+    self.readPackageTimer = 0;
+    
+    [self disconnect];
 }
 @end

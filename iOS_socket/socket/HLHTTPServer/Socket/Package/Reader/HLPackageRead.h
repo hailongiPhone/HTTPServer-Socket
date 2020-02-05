@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSUInteger originalBufferLength;
 //    long tag;
 }
+@property (nonatomic,assign) NSTimeInterval readPackageTimeout;
 
 +(instancetype)packageReadWithFixLength:(NSInteger)length tag:(NSInteger)tag;
 +(instancetype)packageReadWithTerminator:(NSString *)string tag:(NSInteger)tag;

@@ -40,6 +40,20 @@
     [self.packageReaders addObject:reader];
 }
 
+- (NSInteger)packageCount;
+{
+    return [self.packageReaders count];
+}
+
+- (NSInteger)readPackageTimeout;
+{
+    if ([self.packageReaders count] < 1)  {
+        return 0;
+    }
+    
+    return [[self.packageReaders firstObject] readPackageTimeout];
+}
+
 #pragma mark -
 - (NSUInteger)readLengthForEstimatedBytesAvailable:(NSUInteger)estimatedBytesAvailable
                                  readBufferPointer:(uint8_t **)readBufferPointer;

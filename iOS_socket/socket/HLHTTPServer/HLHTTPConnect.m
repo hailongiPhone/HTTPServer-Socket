@@ -42,7 +42,7 @@
     
     HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
     //从socketConnect的代理线程，回到socketConnect的工作线程
-    [self.socketConnect readPackage:packageHeader];
+    [self.socketConnect readPackage:packageHeader timeout:1];
 }
 
 - (void)disconnect;
@@ -59,7 +59,7 @@
             [self.requestHandler onReciveHeadData:data];
             HLPackageRead * packageBody = [self.requestHandler readPackageBody];
             if (packageBody) {
-                [self.socketConnect readPackage:packageBody];
+                [self.socketConnect readPackage:packageBody timeout:1];
             }else{
                 [self tryToReplyToHTTPRequest];
             }
@@ -85,7 +85,7 @@
 
         if ([[self.requestHandler requestHeader] keepAlive]) {
             HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
-            [self.socketConnect readPackage:packageHeader];
+            [self.socketConnect readPackage:packageHeader timeout:1];
         }else{
             [self.socketConnect disconnect];
         }
@@ -112,12 +112,6 @@
     }
 }
 
-#pragma mark -
-#pragma mark -
-- (void) responseTestDataConnect:(HLSocketConnect *)connect;
-{
-    NSData * data = [@"<html><body>H1hahah</body></html>" dataUsingEncoding:NSUTF8StringEncoding];
-    HLPackageWriter * package = [HLPackageWriter packageWithData:data tag:1];
-    [connect writePackage:package];
-}
+
+
 @end
