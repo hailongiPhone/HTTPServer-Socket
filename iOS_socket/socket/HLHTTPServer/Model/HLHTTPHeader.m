@@ -138,6 +138,28 @@
     return self.contentLength >0;
 }
 
+- (BOOL)keepAlive;
+{
+    BOOL result = NO;
+    if ([self.version floatValue] < 1) {
+        
+    }else if([self.version floatValue] < 1.01){
+        NSString * connection = [self valueForKey:kHeaderKeyConnection];
+        if ([connection isEqualToString:kHeaderKeyConnectionKeepAlive]) {
+            result = YES;
+        }
+    }else{
+        NSString * connection = [self valueForKey:kHeaderKeyConnection];
+        if (connection && [connection isEqualToString:kHeaderKeyConnectionClose] ) {
+            result = NO;
+        }else{
+            result = YES;
+        }
+    }
+    
+    return result;
+}
+
 - (BOOL)hasRangeHead;
 {
     NSString * value = [self valueForKey:kHeaderKeyRange];

@@ -10,4 +10,8 @@
 
 @implementation HLHTTPRequest
 
+-(BOOL) keepAlive;
+{
+    return [self.header keepAlive];
+}
 @end

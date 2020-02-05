@@ -13,12 +13,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define kHeaderKeyContentLength     @"Content-Length"
-#define kHeaderKeyHost              @"Host"
-#define kHeaderKeyConnection        @"Connection"
-#define kHeaderKeyContentType       @"Content-Type"
-#define kHeaderKeyRange             @"Range"
-#define kHeaderKeyBoundary          @"boundary"
+#define kHeaderKeyContentLength         @"Content-Length"
+#define kHeaderKeyHost                  @"Host"
+
+#define kHeaderKeyConnection            @"Connection"
+#define kHeaderKeyConnectionKeepAlive   @"Keep-Alive"
+#define kHeaderKeyConnectionClose       @"Close"
+
+#define kHeaderKeyContentType           @"Content-Type"
+#define kHeaderKeyRange                 @"Range"
+#define kHeaderKeyBoundary              @"boundary"
 
 
 @interface HLHeaderLine : NSObject
@@ -52,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) NSString *fileName;
 
 @property(nonatomic, readonly) BOOL hasBody;
+@property(nonatomic, readonly) BOOL keepAlive;
 @property(nonatomic, readonly) BOOL hasRangeHead;
 
 @property(nonatomic, assign) BOOL hasParseDone;

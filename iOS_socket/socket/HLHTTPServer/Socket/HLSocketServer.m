@@ -139,10 +139,11 @@
     if (!self.subReactor) {
         self.subReactor = [[NSMutableArray alloc] initWithCapacity:ListenCount];
     }
-    
+    NSLog(@"setupSubReactor 准备建立socketConnect");
     HLSocketConnect * aconnect = [[HLSocketConnect alloc] initWithSocketFD:connectionFD];
     aconnect.delegate = self;
     if (self.delegate) {
+        NSLog(@"setupSubReactor 已经建立socketConnect");
         [self runBlockOnDelegateQueue:^{
              [self.delegate connect:aconnect];
         }];

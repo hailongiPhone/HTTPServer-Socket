@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HLHTTPRequest : NSObject
 @property (nonatomic,strong) HLHTTPHeaderRequest * header;
 @property (nonatomic,strong) NSData * body;
+
+-(BOOL) keepAlive;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -31,11 +31,17 @@
     return self;
 }
 
+- (void)dealloc
+{
+    NSLog(@"HLHTTPConnect dealloc");
+}
+
 - (void)connect;
 {
     self.requestHandler = [HLHTTPRequestHandler new];
     
     HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
+    //从socketConnect的代理线程，回到socketConnect的工作线程
     [self.socketConnect readPackage:packageHeader];
 }
 
@@ -76,9 +82,14 @@
 {
     NSLog(@"writeDonePackageTag %ld",tag);
     if (tag == HLResponsePackageTagBody) {
-//        HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
-//        [self.socketConnect readPackage:packageHeader];
-        [self.socketConnect disconnect];
+
+        if ([[self.requestHandler requestHeader] keepAlive]) {
+            HLPackageRead * packageHeader = [self.requestHandler readPackageForHeaderInfo];
+            [self.socketConnect readPackage:packageHeader];
+        }else{
+            [self.socketConnect disconnect];
+        }
+        
     }
 //    else{
 //        [self.socketConnect disconnect];

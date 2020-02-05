@@ -110,7 +110,7 @@
             [self.packageReaders removeObject:read];
         }
     }else{
-        NSLog(@"Package Reader NOT Done = %@",read);
+        NSLog(@"Package Reader NOT Done = %@ PreBuffer = %ld",read,[self.preBuffer availableBytes]);
         read = nil;
     }
     return  read;

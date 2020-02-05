@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, HLResponsePackageTag) {
     HLResponsePackageTagHeader,
-    HLResponsePackageTagBody,
+    HLResponsePackageTagBody,           //现在只是以Body作为结束标记--只是有些可能没有body的怎么结束那？自动timeout吧
 };
 
 @interface HLHTTPResponse : NSObject
