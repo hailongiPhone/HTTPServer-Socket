@@ -32,7 +32,7 @@
     }
     
     if ([requestHeader.method isEqualToString:@"POST"]) {
-        return [HLHTTPResponseResource responseHandlerWithRequestHeader:requestHeader];
+        return [HLHTTPResponsePOST responseHandlerWithRequestHeader:requestHeader];
     }
     
     NSLog(@"！！！Not support Method %@",requestHeader.method);

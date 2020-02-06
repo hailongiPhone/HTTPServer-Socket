@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HLHTTPHeader.h"
+#import "HLHTTPResponse.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-@interface HLHTTPResponsePOST : NSObject
-
+@interface HLHTTPResponsePOST : HLHTTPResponse
++ (HLHTTPResponse *)responseHandlerWithRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
 @end
 
 NS_ASSUME_NONNULL_END

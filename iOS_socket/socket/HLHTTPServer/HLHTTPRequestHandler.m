@@ -7,11 +7,14 @@
 //
 
 #import "HLHTTPRequestHandler.h"
+#import "HLMultipartBodyParser.h"
 
 @interface HLHTTPRequestHandler ()
 @property(nonatomic,strong) HLHTTPRequest * request;
 @property(nonatomic,assign) CFHTTPMessageRef message;
 @property(nonatomic,assign) BOOL waitingBodyData;
+
+@property(nonatomic,strong) HLMultipartBodyParser * bodyParser;
 @end
 
 @implementation HLHTTPRequestHandler
@@ -40,7 +43,11 @@
 }
 - (BOOL)onReciveBodyData:(NSData *)data;
 {
-    [self bodySaveAsFile:data];
+    if (!self.bodyParser) {
+        self.bodyParser = [HLMultipartBodyParser parseWithHeader:self.requestHeader];
+    }
+    [self.bodyParser addData:data];
+
     return YES;
 }
 
@@ -86,52 +93,6 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
 {
     HLHTTPHeaderRequest * header = [HLHTTPHeaderRequest new];
     [header parseFromAllData:data];
-    
-//    NSString *headStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//    NSArray<NSString *> *headArray = [headStr componentsSeparatedByString:@"\r\n"];
-//
-//    HLHTTPHeaderRequest * header = [HLHTTPHeaderRequest new];
-//    NSMutableDictionary *head = @{}.mutableCopy;
-//
-//    __block BOOL res = YES;
-//    [headArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//        if(obj.length == 0)return ;
-//        if(idx == 0){
-//            NSArray *lineItems =  [obj componentsSeparatedByString:@" "];
-//            if(lineItems.count != 3) {
-//                *stop = YES;
-//                res = NO;
-//                return;
-//            }
-//            header.method = lineItems[0];
-//            header.path = [lineItems[1] stringByRemovingPercentEncoding];
-//            NSArray *array =  [lineItems[2] componentsSeparatedByString:@"/"];
-//            if(array.count != 2) {
-//                *stop = YES;
-//                res = NO;
-//            }
-//            header.protocol = array[0];
-//            header.version = array[1];
-//            return;
-//        }
-//
-//        NSArray *headItems =  [obj componentsSeparatedByString:@": "];
-//        if(headItems.count != 2) return;
-//        [head setObject:[headItems[1] stringByRemovingPercentEncoding]
-//                 forKey:headItems[0]];
-//    }];
-//
-//    header.host = head[@"Host"];
-//
-//    NSString * length = [head valueForKey:@"Content-Length"];
-//    if (length) {
-//        header.contentLength = strtoull([length UTF8String], NULL, 0);
-//    }
-//
-//    header.headDic = head;
-    
-    //上传文件的处理
-//    [self updateUploadFileHeaderInfo:header];
     
     [[self lazyRequest] setHeader:header];
 }
@@ -260,6 +221,10 @@ Accept-Encoding: gzip // 客户端支持的数据压缩格式
 
 
 #pragma mark - Body
+- (void)parseBody:(NSData *)body withBoundary:(NSString *)boundary
+{
+    
+}
 //最简单处理--保存到一个默认文件夹
 - (void)bodySaveAsFile:(NSData *)body;
 {
