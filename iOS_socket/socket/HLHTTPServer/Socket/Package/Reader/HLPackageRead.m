@@ -67,6 +67,7 @@
 //处理方式，特殊结束符的判断就用 memcmp 进行二进制比较
 //判断的其实位置，就是当前已读数据的最后几位+data中的第一个字符开始组成一个结束符长度字符串，与结束符比较，
 //依次往后移动一位，直到找到结束符，或者所有字符比完为止
+//包含了结束标记位长度
 - (NSUInteger)readLengthForData:(uint8_t *)data
                 availableLength:(NSUInteger)bytesAvailable
                  withTerminator:(NSData *)terminator;

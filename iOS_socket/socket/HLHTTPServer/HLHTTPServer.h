@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HLHTTPRequest.h"
 #import "HLHTTPResponse.h"
+#import "HLHTTPServerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,14 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@protocol HLHTTPServerDelegate <NSObject>
-
--(void) httpserverOnRequest:(HLHTTPRequest*)request fillResponse:(HLHTTPResponse*) response;
-
-@end
 
 @interface HLHTTPServer : NSObject <HLHTTPServerProtocol>
 @property (nonatomic,readonly)NSInteger port;
+@property (nonatomic,weak)id<HLHTTPRequestDelegate> delegate;
 
 -(instancetype)initWithPort:(NSInteger)port;
 //文件路径

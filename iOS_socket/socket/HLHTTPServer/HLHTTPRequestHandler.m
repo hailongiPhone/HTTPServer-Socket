@@ -38,6 +38,8 @@
 {
     [self parseHeaderInfo:data];
 //    [self parseRequestWithCFNetwork:data];
+    
+    self.request.header = self.requestHeader;
     self.waitingBodyData = [self hasBody];
     return YES;
 }
@@ -47,7 +49,10 @@
         self.bodyParser = [HLMultipartBodyParser parseWithHeader:self.requestHeader];
     }
     [self.bodyParser addData:data];
-
+    
+    self.request.body = self.requestBody;
+    
+    self.waitingBodyData = NO;
     return YES;
 }
 
@@ -62,6 +67,14 @@
 - (BOOL)hasBody;
 {
     return [[[self lazyRequest] header] hasBody];
+}
+- (HLBody *)requestBody;
+{
+    if (!self.bodyParser) {
+        return nil;
+    }
+    
+    return [self.bodyParser requestBody];
 }
 
 - (BOOL)hasDone;
@@ -78,6 +91,11 @@
 {
     return [[self lazyRequest] header];
 }
+
+//- (HLHTTPRequest *)request;
+//{
+//    return self.request;
+//}
 #pragma mark - ParseHeader
 //手动解析，也可以使用CFNetwork解析
 /*

@@ -7,7 +7,7 @@
 //
 
 #import "HLHTTPResponseHandler.h"
-#import "HLHTTPResponse.h"
+
 #import "HLHTTPResponseResource.h"
 
 @interface HLHTTPResponseHandler ()
@@ -22,9 +22,18 @@
     return tmp;
 }
 
++(instancetype)responseHandlerWithResponse:(HLHTTPResponse *)response;
+{
+    HLHTTPResponseHandler * tmp = [HLHTTPResponseHandler new];
+    tmp.response = response;
+    return tmp;
+}
+
 - (HLPackageWriter *)writerPackageForHeaderInfo;
 {
-    self.response = [HLHTTPResponse responseHandlerWithRequestHeader:self.requestHeader];
+    if (!self.response) {
+        self.response = [HLHTTPResponse responseHandlerWithRequestHeader:self.requestHeader];
+    }
     
     return [self.response writerPackageForHeaderInfo];
     return nil;

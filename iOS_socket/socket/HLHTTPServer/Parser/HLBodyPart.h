@@ -16,14 +16,20 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HLBodyPart : NSObject
 @property(nonatomic,strong) HLBodyPartHeader * header;
 @property(nonatomic,strong) NSData * data;
+
+- (void)updateHeaderWithData:(NSData *)data;
+- (void)updateBodyPartData:(NSData *)data;
 @end
 
 
 @interface HLBodyPartHeader : NSObject
-@property(nonatomic,strong) NSString * disposition;
-@property(nonatomic,strong) NSString * type;
-@property(nonatomic,strong) NSString * transferEncoding;
-@property(nonatomic,strong) NSString * fileName;
+@property(nonatomic,readonly) NSString * disposition;
+@property(nonatomic,readonly) NSString * type;
+@property(nonatomic,readonly) NSString * transferEncoding;
+@property(nonatomic,readonly) NSString * fileName;
+
++ (instancetype)headerWithData:(NSData *)data;
++ (instancetype)headerWithDictionary:(NSDictionary *)dictioanry;
 @end
 
 NS_ASSUME_NONNULL_END

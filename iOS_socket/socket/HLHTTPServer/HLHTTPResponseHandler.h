@@ -10,6 +10,7 @@
 
 #import "HLHTTPHeader.h"
 #import "HLPackageWriter.h"
+#import "HLHTTPResponse.h"
 
 
 
@@ -19,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong) HLHTTPHeaderRequest * requestHeader;
 
 +(instancetype)responseHandlerWithRequestHeader:(HLHTTPHeaderRequest *)requestHeader;
++(instancetype)responseHandlerWithResponse:(HLHTTPResponse *)response;
 
 - (HLPackageWriter *)writerPackageForHeaderInfo;
 - (HLPackageWriter *)writerPackageBody;

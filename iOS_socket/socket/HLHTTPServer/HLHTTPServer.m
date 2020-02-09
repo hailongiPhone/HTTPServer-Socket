@@ -13,7 +13,7 @@
 
 
 
-@interface HLHTTPServer () <HLSocketServerDelegate>
+@interface HLHTTPServer () <HLSocketServerDelegate,HLHTTPConnectDelegate>
 
 @property (nonatomic,strong)HLSocketServer * socketServer;
 @property (nonatomic,strong)dispatch_queue_t socketCallbackQueue;
@@ -79,6 +79,19 @@
     [self.connectMap removeObjectForKey:connect];
 }
 
+#pragma mark - requesst
+-(HLHTTPResponse*) responseForRequest:(HLHTTPRequest*)request;
+{
+    HLHTTPResponse * response = nil;;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(responseForRequest:)]) {
+        response = [self.delegate responseForRequest:request];
+    }else{
+        response = [HLHTTPResponse responseHandlerWithRequestHeader:request.header];
+    }
+    
+    return response;
+}
+
 
 #pragma mark - Connect map
 - (HLHTTPConnect *) httpConnectForSocketConnect:(HLSocketConnect *)socketConnect;
@@ -86,6 +99,7 @@
     HLHTTPConnect * httpConnect = [self.connectMap objectForKey:socketConnect];
     if (!httpConnect) {
         httpConnect = [[HLHTTPConnect alloc] initWith:socketConnect];
+        httpConnect.delegate = self;
         [self.connectMap setObject:httpConnect forKey:socketConnect];
     }
     

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "HLSocketConnect.h"
+#import "HLHTTPResponse.h"
+#import "HLHTTPRequest.h"
 
 /**
  *  HLHTTPConnect 处理客户端的连接
@@ -17,7 +19,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol HLHTTPConnectDelegate <NSObject>
+
+-(HLHTTPResponse*) responseForRequest:(HLHTTPRequest*)request;
+
+@end
+
 @interface HLHTTPConnect : NSObject
+@property (nonatomic,weak) id<HLHTTPConnectDelegate> delegate;
 
 - (instancetype)initWith:(HLSocketConnect *)socketConnect;
 

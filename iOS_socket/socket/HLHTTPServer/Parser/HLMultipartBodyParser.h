@@ -8,12 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import "HLHTTPHeader.h"
+#import "HLBody.h"
 NS_ASSUME_NONNULL_BEGIN
 
 
 @interface HLMultipartBodyParser : NSObject
+
+@property (nonatomic,strong)HLBody * requestBody;
+
+
 +(instancetype)parseWithHeader:(HLHTTPHeaderRequest *)header;
 -(void)addData:(NSData *)data;
+
 @end
 
 NS_ASSUME_NONNULL_END

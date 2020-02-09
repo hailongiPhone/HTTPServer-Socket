@@ -96,15 +96,44 @@
 //    }
 }
 
+
+//获取request数据，并处理，然后返回response
 - (void)tryToReplyToHTTPRequest
 {
     if (![self.requestHandler hasDone]) {
         return;
     }
     
-    //常见handler
-    self.responseHandler = [HLHTTPResponseHandler responseHandlerWithRequestHeader:[self.requestHandler requestHeader]];
-//    [self.socketConnect writePackage:[self.responseHandler writerPackage]];
+    //获取request数据，并处理，然后返回response
+    HLBody * requestBody = [self.requestHandler requestBody];
+    if (requestBody) {
+        //保存文件
+        switch (requestBody.header.bodytype) {
+            case HLBodyTypeFile:
+                [self saveFileFor:requestBody];
+                break;
+            case HLBodyTypeQueryString:
+            
+                break;
+            case HLBodyTypeJSON:
+            
+                break;
+            default:
+                break;
+        }
+    }
+    
+    HLHTTPResponse * response = nil;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(responseForRequest:)]) {        
+        response = [self.delegate responseForRequest:self.requestHandler.request];
+    }
+
+    if (response) {
+        self.responseHandler = [HLHTTPResponseHandler responseHandlerWithResponse:response];
+    }else{
+        self.responseHandler = [HLHTTPResponseHandler responseHandlerWithRequestHeader:[self.requestHandler requestHeader]];
+    }
+    
     [self.socketConnect writePackage:[self.responseHandler writerPackageForHeaderInfo]];
     HLPackageWriter * body = [self.responseHandler writerPackageBody];
     if (body) {
@@ -112,6 +141,21 @@
     }
 }
 
-
+- (void)saveFileFor:(HLBody *)requestBody;
+{
+   NSString * path = [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory
+             inDomain:NSUserDomainMask
+    appropriateForURL:nil
+               create:YES
+                error:nil] path];
+    
+    NSArray * parts = [requestBody bodyPart];
+    
+    for (HLBodyPart * part in parts) {
+        NSString * filePath = [path stringByAppendingPathComponent:part.header.fileName];
+        [part.data writeToFile:filePath atomically:YES];
+        NSLog(@"filePath = %@",filePath);
+    }
+}
 
 @end

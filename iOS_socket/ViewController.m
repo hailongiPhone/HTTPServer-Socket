@@ -13,7 +13,7 @@
 
 #import "HLHTTPServer.h"
 
-@interface ViewController ()
+@interface ViewController () <HLHTTPRequestDelegate>
 @property(nonatomic,strong) BaseSocket * bs;
 @property(nonatomic,strong) BaseSocket * bc;
 
@@ -37,6 +37,8 @@
 //    [[self class] startCFStreamThreadIfNeeded];
     
     self.httpServer = [[HLHTTPServer alloc] initWithPort:55667];
+    self.httpServer.delegate = self;
+    
 }
 
 - (IBAction)onTapButton:(id)sender {
@@ -242,6 +244,13 @@ CFHTTPMessageSetHeaderFieldValue(myRequest, CFSTR("Content-Type"), CFSTR("applic
     NSMutableDictionary *jsonInfo = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
 
     NSLog(@"responseBody: %@", jsonInfo);
+}
+
+
+#pragma mark -
+-(HLHTTPResponse*) responseForRequest:(HLHTTPRequest*)request;
+{
+    return nil;
 }
 @end
 

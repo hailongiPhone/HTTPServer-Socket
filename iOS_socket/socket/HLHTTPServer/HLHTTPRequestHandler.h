@@ -10,6 +10,7 @@
 #import "HLPackageRead.h"
 #import "HLHTTPRequest.h"
 #import "HLHTTPHeader.h"
+#import "HLBody.h"
 
 /**
  * HLHTTPRequestHandler 负责解析request
@@ -32,10 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)onReciveBodyData:(NSData *)data;
 
 - (BOOL)hasBody;
+- (HLBody *)requestBody;
 
 - (BOOL)hasDone;
 
 - (HLHTTPHeaderRequest *)requestHeader;
+- (HLHTTPRequest *)request;
 @end
 
 NS_ASSUME_NONNULL_END

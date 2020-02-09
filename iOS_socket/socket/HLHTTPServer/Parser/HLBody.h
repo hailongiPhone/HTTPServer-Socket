@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "HLBodyPart.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,17 +18,36 @@ typedef NS_ENUM(NSUInteger, HLBodyType) {
     HLBodyTypeXML,
 };
 
+#define kBodyContentQueryString     @"application/x-www-form-urlencoded"
+#define kBodyContentMultipart       @"multipart/form-data"
+#define kBodyContentJSON            @"application/json"
+#define kBodyContentXML             @"text/xml"
+
+@class HLBodyHeader;
+
 @interface HLBody : NSObject
+@property (nonatomic,strong) HLBodyHeader * header;
+@property (nonatomic,strong) NSMutableArray<HLBodyPart *> * bodyPart;
+
+- (void)addBodyPart:(HLBodyPart *)part;
+
++ (instancetype) bodyWithRequestHeaderContentType:(NSString *)contentType
+                                       parameters:(NSDictionary *)parameters;
 
 @end
 
 @interface HLBodyHeader : NSObject
 @property (nonatomic,readwrite) HLBodyType bodytype;
-@property (nonatomic,strong) NSString * boundary;
+@property (nonatomic,strong) NSDictionary * parameters;
 @property (nonatomic,strong) NSString * charset;
 
-+ (instancetype) bodyHeaderWithRequestHeaderContentType:(NSString *)contentType;
 
+//header中原始的contentType字段需要解析 --
+//参数中的contentType，parameter是解析过后的结果
++ (instancetype) bodyHeaderWithRequestHeaderContentType:(NSString *)contentType
+                                             parameters:(NSDictionary *)parameters;
+- (void)updateBodyTypeWith:(NSString *)contentType
+                parameters:(NSDictionary *)parameters;
 @end
 
 NS_ASSUME_NONNULL_END

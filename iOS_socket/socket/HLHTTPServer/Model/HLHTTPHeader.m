@@ -69,7 +69,7 @@
 {
     NSArray * items;
     if (valueString) {
-        items = [valueString componentsSeparatedByString:@";"];
+        items = [valueString componentsSeparatedByString:@"; "];
     }
     if (items) {
         self.value = [items firstObject];
@@ -85,6 +85,8 @@
                 break;
             }
         }
+        
+        self.parameters = parameters;
     }
     
     self.hasParse = YES;
@@ -193,7 +195,7 @@
     if (!lineItem) {
         return nil;
     }
-    return lineItem.parameters;
+    return [lineItem parameters];
 }
 
 
