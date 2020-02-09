@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *rootDirectory;
 @property(nonatomic, weak) id<HLHTTPRequestDelegate> requestDelegate;
 @property(nonatomic, weak) id<HLHTTPResponseDelegate> responseDelegate;
+
++(instancetype)defaultConfig;
 @end
 
 NS_ASSUME_NONNULL_END

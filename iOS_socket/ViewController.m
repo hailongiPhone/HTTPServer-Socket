@@ -36,9 +36,9 @@
     
 //    [[self class] startCFStreamThreadIfNeeded];
     
-    self.httpServer = [[HLHTTPServer alloc] initWithPort:55667];
-    self.httpServer.delegate = self;
-    
+    self.httpServer = [HLHTTPServer serverWithConfig:^(HLHTTPServerConfig * _Nonnull config) {
+        config.requestDelegate = self;
+    }];
 }
 
 - (IBAction)onTapButton:(id)sender {

@@ -19,13 +19,26 @@
 @property (nonatomic,strong)dispatch_queue_t socketCallbackQueue;
 
 @property (nonatomic,strong)NSMutableDictionary * connectMap;
+
+@property (nonatomic,strong)HLHTTPServerConfig *config;
 @end
 
 @implementation HLHTTPServer
--(instancetype)initWithPort:(NSInteger)port;
++ (instancetype)serverWithConfig:(void(^)(HLHTTPServerConfig *config)) configBlock;
+{
+    HLHTTPServer * tmp = [[HLHTTPServer alloc] initWithConfig:configBlock];
+    return tmp;
+}
+
+-(instancetype)initWithConfig:(void(^)(HLHTTPServerConfig *config)) configBlock;
 {
     if(self = [super init]){
-        self->_port = port;
+        self.config = [HLHTTPServerConfig defaultConfig];
+        
+        if (configBlock) {
+            configBlock(self.config);
+        }
+        
         [self setupSocketServer];
     }
     
@@ -33,10 +46,6 @@
     
 }
 
--(void)setDocumentRoot:(NSString*)path;
-{
-    
-}
 #pragma mark - Socket
 - (void)setupSocketServer;
 {
@@ -47,7 +56,7 @@
     [self.socketServer setDelegate:self
                      callbackQueue:self.socketCallbackQueue];
     
-    [self.socketServer setupMainReactor:self->_port];
+    [self.socketServer setupMainReactor:self.port];
     
     
 }
@@ -83,8 +92,8 @@
 -(HLHTTPResponse*) responseForRequest:(HLHTTPRequest*)request;
 {
     HLHTTPResponse * response = nil;;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(responseForRequest:)]) {
-        response = [self.delegate responseForRequest:request];
+    if (self.requestDelegate && [self.requestDelegate respondsToSelector:@selector(responseForRequest:)]) {
+        response = [self.requestDelegate responseForRequest:request];
     }else{
         response = [HLHTTPResponse responseHandlerWithRequestHeader:request.header];
     }
@@ -105,4 +114,22 @@
     
     return httpConnect;
 }
+
+#pragma mark - helper
+- (NSInteger)port;
+{
+    return [self.config port];
+}
+
+- (id<HLHTTPRequestDelegate>) requestDelegate;
+{
+    return [self.config requestDelegate];
+}
+
+- (id<HLHTTPResponseDelegate>) responseDelegate;
+{
+    return [self.config responseDelegate];
+}
+
+
 @end

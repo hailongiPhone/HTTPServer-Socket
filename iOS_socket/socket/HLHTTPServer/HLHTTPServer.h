@@ -10,24 +10,15 @@
 #import "HLHTTPRequest.h"
 #import "HLHTTPResponse.h"
 #import "HLHTTPServerDelegate.h"
+#import "HLHTTPServerConfig.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol HLHTTPServerProtocol <NSObject>
+@interface HLHTTPServer : NSObject
 
--(instancetype)initWithPort:(NSInteger)port;
--(void)setDocumentRoot:(NSString*)path;
++ (instancetype)serverWithConfig:(void(^)(HLHTTPServerConfig *config)) configBlock;
+-(instancetype)initWithConfig:(void(^)(HLHTTPServerConfig *config)) configBlock;
 
-@end
-
-
-@interface HLHTTPServer : NSObject <HLHTTPServerProtocol>
-@property (nonatomic,readonly)NSInteger port;
-@property (nonatomic,weak)id<HLHTTPRequestDelegate> delegate;
-
--(instancetype)initWithPort:(NSInteger)port;
-//文件路径
--(void)setDocumentRoot:(NSString*)path;
 @end
 
 NS_ASSUME_NONNULL_END
