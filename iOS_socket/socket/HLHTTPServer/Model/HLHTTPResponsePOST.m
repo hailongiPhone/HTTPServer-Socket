@@ -58,7 +58,6 @@
     </head>\
     <body>\
     <p>body 接收到文件。</p>\
-    <p>title 接收到文件啦啦啦。</p>\
     <form action='hl' method='POST' enctype='multipart/form-data'>\
         <p><input type='file' name='upload'></p>\
         <p><input type='submit' value='submit'></p>\

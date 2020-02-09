@@ -278,7 +278,7 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 }
 - (void)stop;
 {
-    if (!self.readSoure) {
+    if (self.readSoure) {
         dispatch_suspend(self.readSoure);
         self.readState = SocketConnectStateWaitReadData;
     }
@@ -300,6 +300,10 @@ typedef NS_ENUM(NSUInteger, SocketConnectState) {
 
 - (void)suspendWriteSource;
 {
+    if (!self.writeSoure) {
+        return;
+    }
+    
     dispatch_suspend(self.writeSoure);
     self.writeState = SocketConnectStateWritingSuspend;
 }

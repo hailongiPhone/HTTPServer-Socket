@@ -51,12 +51,11 @@
 {
     NSString * body = @"<html>\
     <head>\
-    <title>我的第一个 HTML 页面</title>\
+    <title>HLHTTPServer测试界面</title>\
     <meta http-equiv='content-type' content='txt/html; charset=utf-8' /> \
     </head>\
     <body>\
-    <p>body 元素的内容会显示在浏览器中。</p>\
-    <p>title 元素的内容会显示在浏览器的标题栏中。</p>\
+    <p>body 上传图片文件可以直接在App中展示。</p>\
     <form action='hl' method='POST' enctype='multipart/form-data'>\
         <p><input type='file' name='upload'></p>\
         <p><input type='submit' value='submit'></p>\

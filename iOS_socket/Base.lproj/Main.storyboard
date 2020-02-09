@@ -16,60 +16,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZLL-hM-uze">
-                                <rect key="frame" x="108" y="89" width="159" height="30"/>
+                                <rect key="frame" x="108" y="89" width="198" height="159"/>
                                 <state key="normal" title="Socket 连接测试Button"/>
                                 <connections>
                                     <action selector="onTapButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2YP-fA-JX6"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="119" translatesAutoresizingMaskIntoConstraints="NO" id="xFY-ci-oPT">
-                                <rect key="frame" x="89" y="168" width="240" height="405.5"/>
+                                <rect key="frame" x="87" y="297" width="240" height="312.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="k2q-Jt-dU4">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="158.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="195" height="65.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="浏览器输入地址：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJl-fc-0lw">
-                                                <rect key="frame" x="0.0" y="0.0" width="139" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="浏览器输入地址(上传图片)：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJl-fc-0lw">
+                                                <rect key="frame" x="0.0" y="0.0" width="195" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2kP-g4-63i">
-                                                <rect key="frame" x="0.0" y="30.5" width="240" height="128"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="127.0.0.1" textAlignment="center" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2kP-g4-63i">
+                                                <rect key="frame" x="0.0" y="28" width="77.5" height="37.5"/>
+                                                <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" textContentType="url"/>
                                             </textView>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="2kP-g4-63i" firstAttribute="trailing" secondItem="k2q-Jt-dU4" secondAttribute="trailingMargin" id="fTu-6h-CZQ"/>
-                                        </constraints>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="peR-Sd-YtJ">
-                                        <rect key="frame" x="0.0" y="277.5" width="240" height="128"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="128" id="Sw3-dW-Cp6"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="184.5" width="240" height="128"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="k2q-Jt-dU4" firstAttribute="trailing" secondItem="peR-Sd-YtJ" secondAttribute="trailing" id="lne-Sh-grq"/>
-                                    <constraint firstItem="k2q-Jt-dU4" firstAttribute="trailing" secondItem="xFY-ci-oPT" secondAttribute="trailingMargin" id="yU0-wF-bzK"/>
+                                    <constraint firstItem="peR-Sd-YtJ" firstAttribute="width" secondItem="xFY-ci-oPT" secondAttribute="width" id="jKY-CC-XKT"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="xFY-ci-oPT" firstAttribute="top" secondItem="ZLL-hM-uze" secondAttribute="bottom" constant="49" id="6sG-6x-SAq"/>
-                            <constraint firstItem="ZLL-hM-uze" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="45" id="DPQ-eP-TlI"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ZLL-hM-uze" secondAttribute="trailing" symbolic="YES" id="FR7-gV-jjv"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xFY-ci-oPT" secondAttribute="bottom" constant="288.5" id="IZM-zO-vMX"/>
-                            <constraint firstItem="ZLL-hM-uze" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="108" id="NVa-5q-VHF"/>
-                            <constraint firstItem="xFY-ci-oPT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="89" id="evL-Dh-wcX"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xFY-ci-oPT" secondAttribute="trailing" constant="85" id="hen-O5-EEN"/>
-                            <constraint firstItem="xFY-ci-oPT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="89" id="oJj-Yr-Ctv"/>
+                            <constraint firstItem="ZLL-hM-uze" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="108" id="4U6-Uo-k4v"/>
+                            <constraint firstItem="xFY-ci-oPT" firstAttribute="top" secondItem="ZLL-hM-uze" secondAttribute="bottom" constant="49" id="6bj-Lr-FbQ"/>
+                            <constraint firstItem="ZLL-hM-uze" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="45" id="KPn-qG-gx1"/>
+                            <constraint firstItem="xFY-ci-oPT" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="QZ4-Kb-bgK"/>
+                            <constraint firstItem="ZLL-hM-uze" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Ubj-4P-Eio"/>
+                            <constraint firstItem="xFY-ci-oPT" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.57971" id="auO-VY-epQ"/>
+                            <constraint firstItem="xFY-ci-oPT" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="nJE-ff-6bb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

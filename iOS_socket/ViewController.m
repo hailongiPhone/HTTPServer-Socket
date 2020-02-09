@@ -46,7 +46,7 @@
                                                appropriateForURL:nil
                                                           create:YES
                                                            error:nil] path];
-    NSInteger port = 555;
+    NSInteger port = 55667;
     self.httpServer = [HLHTTPServer serverWithConfig:^(HLHTTPServerConfig * _Nonnull config) {
         config.requestDelegate = self;
         config.port = port;
@@ -57,7 +57,6 @@
     NSLog(@"ipstr = %@",ipstr);
     
     [self.ipText setText:[NSString stringWithFormat:@"%@:%ld",ipstr,(long)port]];
-    [self.ipText sizeToFit];
 }
 
 - (IBAction)onTapButton:(id)sender {
