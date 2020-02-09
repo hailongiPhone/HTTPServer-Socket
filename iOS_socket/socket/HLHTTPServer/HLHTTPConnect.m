@@ -23,10 +23,11 @@
 
 @implementation HLHTTPConnect
 
-- (instancetype)initWith:(HLSocketConnect *)socketConnect;
+- (instancetype)initWith:(HLSocketConnect *)socketConnect config:(HLHTTPServerConfig *)config;
 {
     if (self =[super init]) {
         self.socketConnect = socketConnect;
+        self.config = config;
     }
     return self;
 }
@@ -143,11 +144,7 @@
 
 - (void)saveFileFor:(HLBody *)requestBody;
 {
-   NSString * path = [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory
-             inDomain:NSUserDomainMask
-    appropriateForURL:nil
-               create:YES
-                error:nil] path];
+   NSString * path = self.config.rootDirectory;
     
     NSArray * parts = [requestBody bodyPart];
     

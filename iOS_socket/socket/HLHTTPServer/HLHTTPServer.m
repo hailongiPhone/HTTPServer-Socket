@@ -107,7 +107,7 @@
 {
     HLHTTPConnect * httpConnect = [self.connectMap objectForKey:socketConnect];
     if (!httpConnect) {
-        httpConnect = [[HLHTTPConnect alloc] initWith:socketConnect];
+        httpConnect = [[HLHTTPConnect alloc] initWith:socketConnect config:self.config];
         httpConnect.delegate = self;
         [self.connectMap setObject:httpConnect forKey:socketConnect];
     }
