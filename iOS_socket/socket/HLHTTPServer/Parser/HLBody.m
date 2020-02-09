@@ -35,6 +35,21 @@
     }
     [self.bodyPart addObject:part];
 }
+
+- (NSArray *)fileNames;
+{
+    
+    NSArray * parts = [self bodyPart];
+    if (parts.count < 1) {
+        return nil;
+    }
+    
+    NSMutableArray * arr = [NSMutableArray arrayWithCapacity:parts.count];
+    for (HLBodyPart * part in parts) {
+        [arr addObject:part.header.fileName];
+    }
+    return  arr;
+}
 @end
 
 @implementation HLBodyHeader

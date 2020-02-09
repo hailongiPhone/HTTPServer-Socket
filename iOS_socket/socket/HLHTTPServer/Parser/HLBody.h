@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, HLBodyType) {
 + (instancetype) bodyWithRequestHeaderContentType:(NSString *)contentType
                                        parameters:(NSDictionary *)parameters;
 
+- (NSArray *)fileNames;
 @end
 
 @interface HLBodyHeader : NSObject
