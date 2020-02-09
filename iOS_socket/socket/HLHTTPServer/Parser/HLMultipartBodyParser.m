@@ -144,10 +144,10 @@
         NSData * data = [NSData dataWithBytes:readBuffera length:bytesToCopy];
         
         if (package.tag == kBodyPartReadTagHeader) {
-            NSString * Str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//            NSString * Str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             [part updateHeaderWithData:data];
         }else{
-            UIImage * image = [UIImage imageWithData:data];
+//            UIImage * image = [UIImage imageWithData:data];
             [part updateBodyPartData:data];
         }
     }

@@ -193,7 +193,7 @@
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString*docpath=[paths objectAtIndex:0];
-    NSString * path = [docpath stringByAppendingPathComponent:@"t"];
+    NSString * path ;//= [docpath stringByAppendingPathComponent:@"t"];
     return path = @"/Users/hailong/thl.ipc";
 }
 
@@ -323,7 +323,7 @@
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString*docpath=[paths objectAtIndex:0];
-    NSString * path = [docpath stringByAppendingPathComponent:@"t"];
+    NSString * path ;//= [docpath stringByAppendingPathComponent:@"t"];
     return path = @"/Users/hailong/thl.ipc";
 }
 - (void) setupClinetLocalIPCDgram;

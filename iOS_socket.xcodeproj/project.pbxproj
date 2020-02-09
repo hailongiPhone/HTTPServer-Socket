@@ -37,7 +37,6 @@
 		D9F7A6C223CC45130051045E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F7A6C023CC45130051045E /* LaunchScreen.storyboard */; };
 		D9F7A6C523CC45130051045E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6C423CC45130051045E /* main.m */; };
 		D9F7A6D123CC64710051045E /* BaseSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6D023CC64710051045E /* BaseSocket.m */; };
-		D9F7A6D423CC71E30051045E /* IPAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A6D323CC71E30051045E /* IPAddress.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,8 +100,6 @@
 		D9F7A6C423CC45130051045E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D9F7A6CD23CC64410051045E /* BaseSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseSocket.h; sourceTree = "<group>"; };
 		D9F7A6D023CC64710051045E /* BaseSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseSocket.m; sourceTree = "<group>"; };
-		D9F7A6D223CC71C70051045E /* IPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPAddress.h; sourceTree = "<group>"; };
-		D9F7A6D323CC71E30051045E /* IPAddress.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = IPAddress.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,8 +254,6 @@
 			children = (
 				D93B041423D57AEC00977A75 /* HLHTTPServer */,
 				D9F7A6CC23CC63F20051045E /* base */,
-				D9F7A6D223CC71C70051045E /* IPAddress.h */,
-				D9F7A6D323CC71E30051045E /* IPAddress.c */,
 			);
 			path = socket;
 			sourceTree = "<group>";
@@ -367,7 +362,6 @@
 				D9F7A6D123CC64710051045E /* BaseSocket.m in Sources */,
 				D93B042023D5888B00977A75 /* HLSocketServer.m in Sources */,
 				D9969B5123E5C665000B0FDB /* HLHTTPConnect.m in Sources */,
-				D9F7A6D423CC71E30051045E /* IPAddress.c in Sources */,
 				D9969B4523E5A750000B0FDB /* HLPackage.m in Sources */,
 				D93B041A23D57B7700977A75 /* HLHTTPRequest.m in Sources */,
 			);
