@@ -15,6 +15,8 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
+#import <objc/runtime.h>
+
 @interface ViewController () <HLHTTPRequestDelegate>
 @property(nonatomic,strong) BaseSocket * bs;
 @property(nonatomic,strong) BaseSocket * bc;
@@ -27,47 +29,36 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.bs = [BaseSocket new];
-        //        [self.bs setupServerLocalIPCDgram];
-        
-    });
-    //
-    //    [self listIP];
-    
-    //    [[self class] startCFStreamThreadIfNeeded];
-    self.path = [[[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory
-                                                        inDomain:NSUserDomainMask
-                                               appropriateForURL:nil
-                                                          create:YES
-                                                           error:nil] path];
-    NSInteger port = 55667;
-    self.httpServer = [HLHTTPServer serverWithConfig:^(HLHTTPServerConfig * _Nonnull config) {
-        config.requestDelegate = self;
-        config.port = port;
-        config.rootDirectory = self.path;
-    }];
-    
-    NSString * ipstr = [[self class] getIPAddress];
-    NSLog(@"ipstr = %@",ipstr);
-    
-    [self.ipText setText:[NSString stringWithFormat:@"%@:%ld",ipstr,(long)port]];
++ (void)load{
+    NSLog(@"load");
 }
 
-- (IBAction)onTapButton:(id)sender {
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    [self.bs setupClinetTCP];
-    //    [self getRequestWithCFNetwork];
+    [super viewDidLoad];
+
+
+    Class clazz = [self class];
+
+    Class clarr = [ViewController class];
+
+    Class metalclazz = objc_getMetaClass("ViewController");
+
+    if (class_respondsToSelector(metalclazz, @selector(viewWillAppear:))) {
+   
+        NSLog(@"ok");
+    }
+
+    if (clarr == clazz) {
+        [self getRequestWithCFNetwork];
     //    [[self class] stopCFStreamThreadIfNeeded];
     
     //    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"da bao" message:@"Aa" preferredStyle:UIAlertControllerStyleAlert];
     //    [self presentViewController:alert animated:YES completion:^{
     //        
     //    }];
+    }
 }
 
 
@@ -80,7 +71,7 @@
 //#define SERVER_ADD  "127.0.0.1"
 - (void)getRequestWithCFNetwork
 {
-    //创建请求
+    //创建请求h'gf]¥
     CFStringRef url = CFSTR("http://127.0.0.1:55667");
     CFURLRef myURL = CFURLCreateWithString(kCFAllocatorDefault, url, NULL);
     
